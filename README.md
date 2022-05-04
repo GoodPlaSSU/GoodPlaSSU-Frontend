@@ -1,1 +1,0 @@
-# GoodPlaSSU-Frontend

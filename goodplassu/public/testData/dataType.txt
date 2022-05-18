@@ -1,0 +1,8 @@
+user
+id, name, portrait, total point,
+ month point
+
+board
+id, name, user_key, content, image, 
+view_count, cheer_count, created_at,
+updated_at, tag

@@ -1,0 +1,19 @@
+{
+    "users": [
+        {
+            "id" :1,
+            "name":"jhpyeon", 
+            "portrait":"", 
+            "total_point":100,
+            "month_point":10
+        },
+        {
+            "id" :2,
+            "name":"mjkim", 
+            "portrait":"", 
+            "total_point":150,
+            "month_point":30
+        }
+        
+    ]
+}

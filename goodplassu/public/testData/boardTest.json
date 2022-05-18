@@ -1,0 +1,65 @@
+
+{
+    "boards": [
+        {
+            "id" :1,
+            "name":"jhpyeon", 
+            "user_key":1,
+            "content":"hello goodplassu", 
+            "image":"",
+            "view_count":0,
+            "cheer_count":0,
+            "created_at":"2022-05-11",
+            "updated_at":"2022-05-11",
+            "tag": 0
+        },
+        {
+            "id" :2,
+            "name":"mjkim", 
+            "user_key":2,
+            "content":"hello ssudo", 
+            "image":"",
+            "view_count":0,
+            "cheer_count":0,
+            "created_at":"2022-05-12",
+            "updated_at":"2022-05-12",
+            "tag": 0
+        },
+        {
+            "id" :3,
+            "name":"mjkim", 
+            "user_key":2,
+            "content":"qwertasdf", 
+            "image":"",
+            "view_count":0,
+            "cheer_count":0,
+            "created_at":"2022-05-13",
+            "updated_at":"2022-05-13",
+            "tag": 0
+        },
+        {
+            "id" :4,
+            "name":"jhpyeon", 
+            "user_key":1,
+            "content":"this is goodplassu", 
+            "image":"",
+            "view_count":0,
+            "cheer_count":0,
+            "created_at":"2022-05-14",
+            "updated_at":"2022-05-14",
+            "tag": 0
+        },
+        {
+            "id" :5,
+            "name":"mjkim", 
+            "user_key":2,
+            "content":"this is ssudo", 
+            "image":"",
+            "view_count":0,
+            "cheer_count":0,
+            "created_at":"2022-05-15",
+            "updated_at":"2022-05-15",
+            "tag": 0
+        }
+    ]
+}

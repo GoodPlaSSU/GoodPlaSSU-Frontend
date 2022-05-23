@@ -2,15 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const SPostList = () => {
-    const [data, setData] = useState('');
-    useEffect = (() => {
-        axios.get("http://jsonplaceholder.typicode.com/todos/1")
-            .then(res=>setData(res.data))
-    },[]);
-
     return (
         <div>
-            {data}
+            <h1>선행게시판</h1>
         </div>
     );
 };

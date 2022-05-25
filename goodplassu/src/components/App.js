@@ -8,7 +8,7 @@ import Routers from './Routers';
 
 function App() {
   const user = "jh"; //sample
-  console.log();
+  //console.log(user);
   const [init, setInit] = useState(false);
   const [IsLoggedIn, setIsLoggedIn ] = useState(false); //usestate 안에 현재 유저 정보 들어가기
   useEffect(()=>{
@@ -20,6 +20,7 @@ function App() {
   },[]);
   return (
     <div className="App">
+      
       <Routers IsLoggedIn={IsLoggedIn} />
       <footer>goodplassu</footer>
     </div>

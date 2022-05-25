@@ -4,7 +4,7 @@ const CPostList = () => {
     return (
         <>
         
-        
+        <h2>참여게시판</h2>
         
         
         </>

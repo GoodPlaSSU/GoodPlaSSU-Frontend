@@ -33,7 +33,7 @@ const LogIn = () => {
             }
             ReactDOM.render(
                 <GoogleLogin
-                clientId='' //구글에서 클라이언트 id 받아와야함
+                clientId='60409169069-rbqq19gjksgmj5u3cvmab5b22vimjh83.apps.googleusercontent.com' //구글에서 클라이언트 id 받아와야함
                 buttonText='google login'
                 onSuccess={responseGoolge}
                 onFailure={responseGoolge}

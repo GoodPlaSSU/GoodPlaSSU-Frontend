@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { Component , useEffect} from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import '../layout/LogIn.css'
 
 class LogIn extends Component {
@@ -22,13 +22,17 @@ class LogIn extends Component {
             console.log('Image URL: ' + profile.getImageUrl());
             console.log('Email: ' + profile.getEmail());
             this.setState({ token: googleUser.getAuthResponse().id_token });
+            localStorage.setItem('ID',profile.getEmail())
+            localStorage.setItem('Name',profile.getName())
         });
-        Navigate('/mypage');
+        
     }
 
     // #5 로그아웃 기능 구현
     logout = () => {
         this.setState({ token: '' });
+        localStorage.removeItem('ID');
+        localStorage.removeItem('Name')
         this.auth2.disconnect();
     }
 

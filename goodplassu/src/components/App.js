@@ -7,12 +7,12 @@ import Routers from './Routers';
 
 
 function App() {
-  const [IsLoggedIn, setIsLoggedIn ] = useState(true);
-  useEffect(() => {
+  const [IsLoggedIn, setIsLoggedIn ] = useState(false);
+  useEffect(() => {(localStorage.getItem('ID')!=null)?setIsLoggedIn(true):setIsLoggedIn(false)
     },[IsLoggedIn])
     return (
       <div className="App">
-        <Routers IsLoggedIn={IsLoggedIn} />
+        <Routers />
       </div>
   );
 }

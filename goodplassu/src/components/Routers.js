@@ -6,14 +6,14 @@ import MyPage from '../routes/myPage';
 import SPostList from '../routes/sPostList'
 import Navigation from './Navigation';
 
-const Routers = ({IsLoggedIn}) => {
+const Routers = () => {
     return (
         <Router>
-            <Navigation IsLoggedIn={IsLoggedIn}/>
+            <Navigation />
             <Routes>
                 <Route path='/' element={<SPostList />}></Route>
                 <Route path='/together' element={<CPostList />}></Route>
-                <Route path='/mypage' element={<MyPage IsLoggedIn={IsLoggedIn}/>}></Route>
+                <Route path='/mypage' element={<MyPage/>}></Route>
                 <Route path='/LogIn' element={<LogIn />}></Route>
             </Routes>
         </Router>

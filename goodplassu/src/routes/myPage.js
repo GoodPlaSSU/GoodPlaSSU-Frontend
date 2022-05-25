@@ -1,9 +1,7 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
 
-const MyPage = (IsLoggedIn) => {
-    const navigate = useNavigate();
-
+const MyPage = () => {
     return (
         <>
         <h1>

@@ -8,7 +8,30 @@ const Home = (userKeyInfo) => {
     //tag, cursor값 쿼리스트링으로 보낼것
     const boardTag=0; //tag=0 =>선행게시판
     const [content, setContent] = useState("");//글입력 설정용
-    const [boards, setBoards] = useState([{}]); //타임라인 배열
+    const [boards, setBoards] = useState([{
+        id :1,
+        name:"jhpyeon", 
+        user_key:1,
+        content:"hello goodplassu", 
+        image:"",
+        view_count:0,
+        cheer_count:0,
+        created_at:"2022-05-11",
+        updated_at:"2022-05-11",
+        tag: 0
+    },
+    {
+        id :2,
+        name:"mjkim", 
+        user_key:2,
+        content:"hello ssudo", 
+        image:"",
+        view_count:0,
+        cheer_count:0,
+        created_at:"2022-05-12",
+        updated_at:"2022-05-12",
+        tag: 0
+    }]); //타임라인 배열
     const navigate= useNavigate();
 
     const onSubmit= (event) =>{
@@ -25,17 +48,22 @@ const Home = (userKeyInfo) => {
         
     }
     const getBoards = async()=>{
-        const myboards = await axios.get('testData/boardTest.json');
+        //const myboards = await axios.get('testData/boardTest.json');
         //db에서 게시글 받아옴
-        console.log(myboards.data.boards);
-        setBoards(myboards.data); //받은 배열 boards에 저장
+        //console.log(myboards.data.boards);
+        //setBoards(myboards.data); //받은 배열 boards에 저장as
+        // await axios.get('testData/boardTest.json').then(response=>{
+        //     setBoards(response.data);
+        // });
         console.log(boards);
     };
     const onBoardClick=async()=>{
         navigate("/PostView"); //글 클릭시 postview함수 페이지로 이동
+        console.log("clicked ");
     }
     useEffect(()=>{
         getBoards();
+        console.log(boards);
     },[]);
     return (
         //글 입력하고 전송하는 페이지 뷰.
@@ -49,11 +77,13 @@ const Home = (userKeyInfo) => {
             <div>
                 
                 {/* 타임라인 표시 부분. map는 객체 늘어놓는함수*/}
-                {/* {boards.map((content) => (
-                    <span key={""} onClick={onBoardClick}>
-                    <h4>{boards}</h4>
+                {boards.map((board) => (
+                    <span key={board.id} onClick={onBoardClick}>
+                        <h3>{board.name}</h3>
+                    <h4>{board.content}</h4>
+                    <h5>{board.image}</h5>
                     </span>
-                ))} */}
+                ))}
                 
                 
             </div>

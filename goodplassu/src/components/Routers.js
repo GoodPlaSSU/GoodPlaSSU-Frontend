@@ -18,7 +18,7 @@ const Routers = ({IsLoggedIn}) => {
                     <Route path='/' element={<Home />}></Route>
                     <Route path='/MyPage' element={<MyPage />}></Route>
                     <Route path='/CPostList' element={<CPostList/>}></Route>
-                    <Route path='/BoardView' element={<SPostView/>}></Route>
+                    <Route path='/PostView' element={<SPostView/>}></Route>
                     
                 </>
                 ): ( //로그인 되어있지 않으면 로그인화면

@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const Navigation = () => {
     return(
-    <header>
-    <nav>
+    <header className="GSHeader">
+    <nav className="">
         <ul>
             <li>
                 <Link to="/">선행게시판</Link>

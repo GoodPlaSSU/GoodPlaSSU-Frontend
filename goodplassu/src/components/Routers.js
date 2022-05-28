@@ -5,8 +5,8 @@ import LogIn from '../routes/Login';
 import MyPage from '../routes/myPage';
 import SPostList from '../routes/sPostList'
 import Navigation from './Navigation';
-import SPostView from '../routes/sPostView'
-import CPostView from '../routes/cPostView'
+import PostView from '../routes/PostView'
+import MyPostList from '../routes/myPostList';
 
 const Routers = () => {
     return (
@@ -17,8 +17,8 @@ const Routers = () => {
                 <Route path='/cBoard' element={<CPostList />}></Route>
                 <Route path='/mypage' element={<MyPage/>}></Route>
                 <Route path='/LogIn' element={<LogIn />}></Route>
-                <Route path='/sPostView' element={<SPostView />}></Route>
-                <Route path='/cBoard/cPostView' element={<CPostView />}></Route>
+                <Route path='/PostView/:no' element={<PostView />}></Route>
+                <Route path='/myPostList/:no' element={<MyPostList />}></Route>
             </Routes>
         </Router>
     )

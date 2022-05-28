@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from "react-intersection-observer"
 import axios from 'axios';
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 
 const SPostList = () => {
@@ -93,8 +93,10 @@ const SPostList = () => {
     //------
 
     // 카드(게시물) 클릭 함수
-    const CardClick = (cardid) => {
-        console.log(cardid);
+    const navigate = useNavigate();
+    const CardClick = (postid) => {
+        console.log(postid);
+        navigate(`/PostView/${postid}`)
     }
 
     return (
@@ -114,8 +116,9 @@ const SPostList = () => {
                     <span className='Post' key={index} >
                         <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)} >
                         <p>{index+1}</p>
-                        <p>작성자 : {post.writer_name} </p>
+                        <p>작성자 :{/*<img src={post.writer_portrait}></img>*/}{post.writer_name} </p>
                         <p>내용 : {post.content} </p>
+                        { (post.image1) ? <p> 📁 </p> : <p></p> }
                         </span>
                         <button onClick={()=>console.log('하트')} > 💓 {post.cheer_count}</button>
                         <p></p>

@@ -1,6 +1,9 @@
 import React, { Component , useEffect} from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import '../layout/LogIn.css'
+import GoogleLogin from 'react-google-login';
+import axios from 'axios';
+
 
 class LogIn extends Component {
     constructor() {
@@ -12,20 +15,24 @@ class LogIn extends Component {
     componentDidMount() {
         this.googleSDK();
     }
+
     // #4 로그인 기능 구현
     login = () => {
         this.auth2.signIn().then(googleUser => {
             let profile = googleUser.getBasicProfile();
             //console.log('Token || ' + googleUser.getAuthResponse().id_token);
-            console.log('ID: ' + profile.getId());
-            console.log('Name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail());
             this.setState({ token: googleUser.getAuthResponse().id_token });
-            localStorage.setItem('ID',profile.getEmail())
-            localStorage.setItem('Name',profile.getName())
+            let user = {
+                ID: profile.getEmail(),
+                Name:profile.getName(),
+                Portrait:profile.getImageUrl(),
+            }
+            localStorage.setItem('ID',user["ID"]);
+            localStorage.setItem('Name',user["Name"]);
+            localStorage.setItem('Portrait',user["Portrait"])
+            //axios.post(`http://localhost:4000/users/`,)
+            window.location.replace('/mypage');
         });
-        
     }
 
     // #5 로그아웃 기능 구현
@@ -71,7 +78,7 @@ class LogIn extends Component {
                                 <div className="col-md-4 mt-2 m-auto ">
                                     {this.state.token ?
                                         <button className="logoutBtn loginBtn--google" onClick={this.logout}>Logout</button> :
-                                        <button className="loginBtn loginBtn--google" onClick={this.login} ref="">Login with Google</button>
+                                        <button className="loginBtn loginBtn--google" onClick={this.login} ref="">Sign in With Google</button>
                                     }
                                 </div>
                             </div>

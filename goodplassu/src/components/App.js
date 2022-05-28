@@ -7,14 +7,14 @@ import Routers from './Routers';
 
 
 function App() {
-  const [IsLoggedIn, setIsLoggedIn ] = useState(false);
-  useEffect(() => {(localStorage.getItem('ID')!=null)?setIsLoggedIn(true):setIsLoggedIn(false)
-    },[IsLoggedIn])
-    return (
-      <div className="App">
-        <Routers />
-      </div>
-  );
+    const [IsLoggedIn, setIsLoggedIn ] = useState(localStorage.getItem('ID')!=null);
+    useEffect(() => {(localStorage.getItem('ID')!=null)?setIsLoggedIn(true):setIsLoggedIn(false)
+        },[localStorage.getItem('ID')])
+        return (
+        <div className="App">
+            <Routers />
+        </div>
+    );
 }
 
 export default App;

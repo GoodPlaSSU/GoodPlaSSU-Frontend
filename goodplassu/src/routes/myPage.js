@@ -1,12 +1,39 @@
-import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {useGoolgeLogout} from 'react-google-login';
+import axios from 'axios';
 
 const MyPage = () => {
+    const [userInfo,setUserInfo] = useState({
+            id : '',
+            name:"", 
+            portrait:"", 
+            total_point: 0,
+            month_point: 0
+        });
+
+    const id = localStorage.getItem("ID");
+
+    useEffect(() => {
+        axios.get(`http://localhost:4000/users/${id}`)
+        .then((res)=>{
+            setUserInfo(res.data);
+        })
+        .catch((err)=>console.log(err))
+    },[])
+
     return (
+        // 마이페이지 레이아웃
         <>
-        <h1>
-            마이페이지
-        </h1>
+        <h1>MyPage</h1>
+        <img src={userInfo.portrait}/>
+        <div>{userInfo.name}</div>
+        <h4>선행 포인트 현황</h4>
+        <div>전체 포인트: {userInfo.total_point}</div>
+        <div>이달의 포인트: {userInfo.month_point}</div>
+        <div><button>내가 쓴 게시물 보기</button></div>
+        <div><button>내가 댓글 쓴 게시물 보기</button></div>
+        <div><button>내가 좋아요 누른 게시물 보기</button></div>
         </>
     );
 };

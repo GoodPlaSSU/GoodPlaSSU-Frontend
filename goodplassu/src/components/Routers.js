@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CPostList from '../routes/cPostList';
-import LogIn from '../routes/LogIn';
+import LogIn from '../routes/Login';
 import MyPage from '../routes/myPage';
 import SPostList from '../routes/sPostList'
 import Navigation from './Navigation';
+import SPostView from '../routes/sPostView'
+import CPostView from '../routes/cPostView'
 
 const Routers = () => {
     return (
@@ -12,9 +14,11 @@ const Routers = () => {
             <Navigation />
             <Routes>
                 <Route path='/' element={<SPostList />}></Route>
-                <Route path='/together' element={<CPostList />}></Route>
+                <Route path='/cBoard' element={<CPostList />}></Route>
                 <Route path='/mypage' element={<MyPage/>}></Route>
                 <Route path='/LogIn' element={<LogIn />}></Route>
+                <Route path='/sPostView' element={<SPostView />}></Route>
+                <Route path='/cBoard/cPostView' element={<CPostView />}></Route>
             </Routes>
         </Router>
     )

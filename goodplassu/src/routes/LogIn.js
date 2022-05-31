@@ -4,7 +4,6 @@ import '../layout/LogIn.css'
 import GoogleLogin from 'react-google-login';
 import axios from 'axios';
 
-
 class LogIn extends Component {
     constructor() {
         super();
@@ -23,14 +22,18 @@ class LogIn extends Component {
             //console.log('Token || ' + googleUser.getAuthResponse().id_token);
             this.setState({ token: googleUser.getAuthResponse().id_token });
             let user = {
-                ID: profile.getEmail(),
-                Name:profile.getName(),
-                Portrait:profile.getImageUrl(),
+                id: profile.getEmail(),
+                name:profile.getName(),
+                portrait:profile.getImageUrl(),
             }
-            localStorage.setItem('ID',user["ID"]);
-            localStorage.setItem('Name',user["Name"]);
-            localStorage.setItem('Portrait',user["Portrait"])
-            //axios.post(`http://localhost:4000/users/`,)
+            axios.defaults.withCredentials = true; 
+            axios.post(`https://goodplassu-server.herokuapp.com/login`,user)
+            .then((res)=>{
+                console.log(res)
+            })
+            localStorage.setItem('ID',user["id"]);
+            localStorage.setItem('Name',user["name"]);
+            localStorage.setItem('Portrait',user["portrait"])
             window.location.replace('/mypage');
         });
     }

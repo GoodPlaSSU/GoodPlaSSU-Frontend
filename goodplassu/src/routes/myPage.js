@@ -5,7 +5,6 @@ import axios from 'axios';
 
 const MyPage = () => {
     const [userInfo,setUserInfo] = useState({
-            id : '',
             name:"", 
             portrait:"", 
             total_point: 0,
@@ -15,9 +14,9 @@ const MyPage = () => {
     const id = localStorage.getItem("ID");
 
     useEffect(() => {
-        axios.get(`http://localhost:4000/users/${id}`)
+        axios.get(`https://goodplassu-server.herokuapp.com/mypage/user/${id}`)
         .then((res)=>{
-            setUserInfo(res.data);
+            setUserInfo(res.data.user);
         })
         .catch((err)=>console.log(err))
     },[])

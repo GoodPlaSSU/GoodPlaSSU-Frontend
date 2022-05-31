@@ -4,7 +4,6 @@ import axios from 'axios';
 import styled from "styled-components";
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
-
 const SPostList = () => {
 
   	const[info,setinfo]=useState('');
@@ -12,8 +11,8 @@ const SPostList = () => {
 	const [maxpoint,SetMaxpoint]=useState(0);
 
   	useEffect(()=>{
-		  // 선행왕 함수 있어야 함
-  	},[])
+        axios.defaults.withCredentials = true; 
+    },[])
 
 
     //이미지 업로드 함수
@@ -52,6 +51,8 @@ const SPostList = () => {
     const [postLists, setPostLists] = useState([]);
     let pageNumber=1 // usestate로 변경하려고 했는데 이상하게 작동이 안돼서 그냥 변수로 선언
     const [endLoaded,setEndLoaded] = useState(false); // 로딩이 끝났는지 안끝났는지 확인하는 함수
+    const firstloading=1;
+    const[lastcursor,SetLastCursor] =useState('');
 
     useEffect(() => {
         console.log(postLists);
@@ -59,14 +60,27 @@ const SPostList = () => {
     
     const getMorepost = async () => {
         setIsLoaded(true);
-        //await new Promise((resolve) => setTimeout(resolve, 1500));
         console.log('loading')
-        await axios.get(`http://localhost:5000/postlist?_page=${pageNumber}&_limit=10`) // json-server에서 페이지 네이션 하는 법
-        .then((res) => {
-            setPostLists(postLists=>postLists.concat(res.data)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
-            if(res.data.length%10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
-            // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
-        })
+        if(firstloading){
+            await axios.get(`https://goodplassu-server.herokuapp.com/board/`,{params :{tag:0,cursor:'999999999999999999999999'}})
+            .then((res) => {
+                console.log(res)
+                setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
+                if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
+                // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
+                firstloading=0;
+            })
+        }
+        else{
+            await axios.get(`https://goodplassu-server.herokuapp.com/board`,{params :{tag:0,cursor:{lastcursor}}}) // json-server에서 페이지 네이션 하는 법
+            .then((res) => {
+                console.log(res)
+                setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
+                if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
+                // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
+            })
+        }
+        SetLastCursor()
         setIsLoaded(false);
     };
     
@@ -118,6 +132,7 @@ const SPostList = () => {
                         <p>{index+1}</p>
                         <p>작성자 :{/*<img src={post.writer_portrait}></img>*/}{post.writer_name} </p>
                         <p>내용 : {post.content} </p>
+                        <p>작성일자 : {post.updated_at} </p>
                         { (post.image1) ? <p> 📁 </p> : <p></p> }
                         </span>
                         <button onClick={()=>console.log('하트')} > 💓 {post.cheer_count}</button>

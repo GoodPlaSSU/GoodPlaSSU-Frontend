@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Link, Navigate, useNavigate } from 'react
 import Home from '../routes/Home';
 import SPostList from '../routes/sPostList';
 import Routers from './Routers';
+import axios from 'axios';
 
 
 function App() {

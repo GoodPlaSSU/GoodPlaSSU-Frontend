@@ -4,36 +4,37 @@ import { useParams } from 'react-router-dom';
 
 const PostView = () => {
     const { no } = useParams(); // 왜인진 모르지만 no가 아닌 다른 이름은 오류가 남
-    const [ data, setData ] = useState({
-        "id" : 0, // 값이 없을 때 id를 숫자로 했으면 0 아니면 ''로 표현
-        "user_key": "",
-        "writer_name": "",
-        "writer_portrait":"",
-        "content": "",
-        "image1":"",
-        "image2":"",
-        "image3":"",
-        "image4":"",
-        "cheer_count": '' 
-    });
-  
-    useEffect(() => {
+    const [ post, setPost ] = useState([]); // 게시물 상세보기
+    const moment = require('moment'); // 시간 형식 바꿀 때 필요한 라이브러리
+
+    const postLoading = async() => {
         console.log('postview loading');
-        axios.get(`http://localhost:5000/postlist/${no}`)
+        await axios.get(`https://goodplassu-server.herokuapp.com/board/${no}`)
         .then((res)=>{
-            setData(res.data)
-            console.log(data)
+            setPost(res.data.post[0]);
         })
         .catch((err)=>console.log(err));
+    }
+
+    useEffect(()=>{
+        console.log(post)
+    },[post])
+
+    useEffect(() => {
+        postLoading();
     }, []);
 
     return (
-        <div>
-            <p>작성자 : {data.writer_name}</p>
-            <p>작성일자 : {'2022.06.13'}</p>
-            <h3>{data.content}</h3>
-            <p>💓 {data.cheer_count} </p>
-        </div>
+        <header> 
+            <span><img src={post.writer_portrait} width='30px' height='30px'/> {post.writer_name} </span>
+            <p>작성일자 : {moment(post.updated_at).format('YYYY-MM-DD HH:MM')}</p>
+            <h3>{post.content}</h3>
+            {post.image1 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>} {/*이미지가 존재하면 보여주고 아니면 안보여줌*/}
+            {post.image2 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
+            {post.image3 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
+            {post.image4 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
+            <p>💓 {post.cheer_count} </p>
+        </header>
     )
 };
 

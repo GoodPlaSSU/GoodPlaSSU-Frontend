@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CPostList from '../routes/cPostList';
-import LogIn from '../routes/Login';
+import LogIn from '../routes/LogIn';
 import MyPage from '../routes/myPage';
 import SPostList from '../routes/sPostList'
 import Navigation from './Navigation';

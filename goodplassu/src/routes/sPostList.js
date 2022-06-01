@@ -30,7 +30,7 @@ const SPostList = () => {
     const onSubmit= (event) =>{
         event.preventDefault();
         {localStorage.getItem("ID") ?
-        axios.post(`https://goodplassu-server.herokuapp.com/board`,{
+        axios.post(`https://goodplassu-server.herokuapp.com/board/`,{
             "user_key" : localStorage.getItem("ID"),
             "content" : content,
             "image1" : imageLists[0],

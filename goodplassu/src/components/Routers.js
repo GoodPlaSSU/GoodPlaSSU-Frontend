@@ -7,6 +7,7 @@ import SPostList from '../routes/sPostList'
 import Navigation from './Navigation';
 import PostView from '../routes/PostView'
 import MyPostList from '../routes/myPostList';
+import Posting from '../routes/Posting';
 
 const Routers = () => {
     return (
@@ -19,6 +20,7 @@ const Routers = () => {
                 <Route path='/LogIn' element={<LogIn />}></Route>
                 <Route path='/PostView/:no' element={<PostView />}></Route>
                 <Route path='/myPostList/:no' element={<MyPostList />}></Route>
+                <Route path='/posting/:no' element={<Posting />}></Route>
             </Routes>
         </Router>
     )

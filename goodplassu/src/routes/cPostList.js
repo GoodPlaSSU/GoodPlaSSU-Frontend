@@ -4,42 +4,60 @@ import { useNavigate } from 'react-router-dom';
 
 const CPostList = () => {
     const[info,setinfo]=useState('');
-    const [monthUserName,SetMonthUserName]=useState("minji"); // 이달의 선행왕
-	const [maxpoint,SetMaxpoint]=useState(0);
-
+    
   	useEffect(()=>{
-		  // 선행왕 함수 있어야 함
-  	},[])
+        axios.defaults.withCredentials = true; 
+    },[])
 
+    // 이달의 선행왕 함수
+    const [monthUserName,setMonthUserName]=useState([]); // 이달의 선행왕
+	const [maxpoint,setMaxpoint]=useState(0);
+    useEffect(()=>{
+        axios.get(`https://goodplassu-server.herokuapp.com/monthPoint`)
+        .then((res)=>{
+            console.log(res.data);
+            setMaxpoint(res.data.maxPoint);
+            setMonthUserName(res.data.monthUsers);
+        })
+        .catch((err)=>console.log(err))
+    },[])
+    //-----
 
-    //이미지 업로드 함수
-    const [showImages, setShowImages] = useState([]);
-
-    const handleAddImages = (event) =>{ //이미지 넣었을 때
-        const imageLists = event.target.files;
-        let imageUrlLists = [...showImages];
-    
-        for (let i = 0; i < imageLists.length; i++) {
-            const currentImageUrl = URL.createObjectURL(imageLists[i]);
-            imageUrlLists.push(currentImageUrl);
-        }
-    
-        if (imageUrlLists.length > 4) {
-            imageUrlLists = imageUrlLists.slice(0, 4);
-        }
-        setShowImages(imageUrlLists);
-    };
-    //
+    // 이미지 업로드 함수
+    // const [imageLists,setImageLists] =useState([]);
+    // const handleAddImages = (event) =>{ //이미지 넣었을 때
+    //     setImageLists(event.target.files);
+    //     if (imageLists.length > 4) {
+    //         setImageLists(imageLists.slice(0, 4));
+    //     }
+    // };
+    //------
 
     //------ 게시글 작성 함수
-    const [content, setContent] = useState(""); // 내용 입력할 때
-    const onSubmit= (event) =>{
-        event.preventDefault();
-    }
-    const onChange= (event) =>{
-        const{ target : { value }} = event;
-        setContent(value);
-    }
+    // const [content, setContent] = useState(""); // 내용 입력할 때
+    // const onSubmit= (event) =>{
+    //     event.preventDefault();
+    //     {localStorage.getItem("ID") ?
+    //     axios.post(`https://goodplassu-server.herokuapp.com/board/`,{
+    //         "user_key" : localStorage.getItem("ID"),
+    //         "content" : content,
+    //         "image1" : imageLists[0],
+    //         "image2" : imageLists[1],
+    //         "image3" : imageLists[2],
+    //         "image4" : imageLists[3],
+    //         "tag" : 1
+    //     })
+    //     .then((res)=>{
+    //         console.log(res);
+    //         window.location.reload();
+    //     })
+    //     .catch((err)=>console.log(err))
+    //     : navigate('/LogIn')}
+    // }
+    // const onChange= (event) =>{
+    //     const{ target : { value }} = event;
+    //     setContent(value);
+    // }
     //------
 
     // 게시물 불러오기 함수
@@ -110,24 +128,78 @@ const CPostList = () => {
     }, [target,endLoaded]);
     //------
 
+    // 게시글 작성 버튼 함수
+    const onPostingClick = () =>{
+        {localStorage.getItem("ID") ? navigate('/posting/cpost') : navigate('/LogIn')}
+    }
+    //-----
+
+    // 광고 불러오기 함수
+    const [ads,setAds] = useState([]);
+    let i = 0; // 광고 순서 매기기 위한 변수
+    const adLoading = async() => {
+        await axios.get(`https://goodplassu-server.herokuapp.com/ad`)
+        .then((res)=>{
+            setAds(res.data.ads);
+            console.log(ads);
+        })
+        .catch((err)=>console.log(err))
+    }
+
+    useEffect(()=>{
+        adLoading();
+    },[])
+    //-----
+
     // 카드(게시물) 클릭 함수
     const navigate = useNavigate();
     const CardClick = (postid) => {
         console.log(postid);
         navigate(`/PostView/${postid}`)
     }
+    //-----
+
+    // 좋아요(참여하기) 클릭 함수
+    const [cheer,setCheer]=useState(1); // 1이면 아직 누르지 않은 상태, 0이면 누른 상태
+    const onCheerClick = (postid) =>{
+        if(localStorage.getItem("ID")==null){
+            navigate('LogIn'); // 로그인 되어있지 않으면 로그인 페이지로 이동
+        }
+        else{
+        {cheer ?
+        (axios.post('https://goodplassu-server.herokuapp.com/cheer',{ // cheer가 1일때 실행 -> 눌러지지 않은 상태
+            "user_key" : localStorage.getItem("ID"),
+            "board_key" : postid,
+            "isOn" : true
+        })
+        .then((res)=>{
+            console.log(res);
+            setCheer(0);
+        })) : (
+            axios.post('https://goodplassu-server.herokuapp.com/cheer',{
+            "user_key" : localStorage.getItem("ID"),
+            "board_key" : postid,
+            "isOn" : false
+        })
+        .then((res)=>{
+            console.log(res);
+            setCheer(1);
+        }))}}
+    }
+    //-----
 
     return (
         <div>
              <header>
-            <h4>이달의 선행왕 : {monthUserName} point : {maxpoint}</h4>
-            <form onSubmit={onSubmit}>
+            <p>이달의 선행왕 : {monthUserName.map((user,index)=>(<>{user.name}</>))} point : {maxpoint}</p>
+            {/* <form onSubmit={onSubmit}>
                 <>
                 <input value={content} onChange={onChange} type='text' placeholder='같이 선행에 참여해보세요!' maxLength={1000} />
                 <input type='file' name='imgFile' multiple='multiple' onChange={handleAddImages} accept='.jpg,.jpeg,.png' />
                 <input type='submit' value='POST' />
                 </>
-            </form>
+            </form> */}
+            <button onClick={onPostingClick}>게시글 작성하기!</button>
             </header>
             <div className='cardcontainer'>
                 {postLists.map((post,index)=>(
@@ -139,15 +211,21 @@ const CPostList = () => {
                         <p>작성일자 : {moment(post.updated_at).format("YYYY-MM-DD HH:MM")} </p>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
-                        <button onClick={()=>console.log('참여하기')} > 참가하기 🙋🏻{post.cheer_count}</button>
+                        <button onClick={()=>console.log('참여하기')} > 참가하기 🙋🏻{cheer ? post.cheer_count : post.cheer_count+1}
+                        </button>
                         <p></p>
                     </span>
                 ))}
             </div>
+            { ads.length - i ? 
+            (<a href={ads[i].link}>
+                <img src={ads[i++].image} />
+            </a>) : <></>}
             <> 
             {endLoaded ? <p> 마지막 게시물 입니다. </p>  :
             <div ref={setTarget} className='Target Element'>{isLoaded &&"로딩중 .. 기다려주세요"}</div>}
             </>
+            
         </div>
     );
 };

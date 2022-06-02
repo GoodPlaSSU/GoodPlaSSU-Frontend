@@ -18,6 +18,10 @@ const MyPostList = () =>{
     useEffect(() => {
         console.log(postLists);
     }, [postLists]);
+
+  	useEffect(()=>{
+        axios.defaults.withCredentials = true; 
+    },[])
    
     const LoadPostList = async()=>{    
         setIsLoaded(true);

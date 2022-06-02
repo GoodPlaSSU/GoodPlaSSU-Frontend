@@ -1,7 +1,6 @@
 import '../App.css';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
-import Home from '../routes/Home';
 import SPostList from '../routes/sPostList';
 import Routers from './Routers';
 import axios from 'axios';

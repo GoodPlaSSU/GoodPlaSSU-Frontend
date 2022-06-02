@@ -7,51 +7,25 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 const SPostList = () => {
 
   	const[info,setinfo]=useState('');
-    const [monthUserName,SetMonthUserName]=useState("minji"); // 이달의 선행왕
-	const [maxpoint,SetMaxpoint]=useState(0);
+
 
   	useEffect(()=>{
         axios.defaults.withCredentials = true; 
     },[])
 
-
-    //이미지 업로드 함수
-    const [imageLists,setImageLists] =useState([]);
-    const handleAddImages = (event) =>{ //이미지 넣었을 때
-        setImageLists(event.target.files);
-        if (imageLists.length > 4) {
-            setImageLists(imageLists.slice(0, 4));
-        }
-    };
-    //
-
-    //------ 게시글 작성 함수
-    const [content, setContent] = useState(""); // 내용 입력할 때
-    const onSubmit= (event) =>{
-        event.preventDefault();
-        {localStorage.getItem("ID") ?
-        axios.post(`https://goodplassu-server.herokuapp.com/board/`,{
-            "user_key" : localStorage.getItem("ID"),
-            "content" : content,
-            "image1" : imageLists[0],
-            "image2" : imageLists[1],
-            "image3" : imageLists[2],
-            "image4" : imageLists[3],
-            "tag" : 0
-        })
+    // 이달의 선행왕 함수
+    const [monthUserName,setMonthUserName]=useState([]); // 이달의 선행왕
+	const [maxpoint,setMaxpoint]=useState(0);
+    useEffect(()=>{
+        axios.get(`https://goodplassu-server.herokuapp.com/monthPoint`)
         .then((res)=>{
-            console.log(res);
-            window.location.reload();
+            console.log(res.data);
+            setMaxpoint(res.data.maxPoint);
+            setMonthUserName(res.data.monthUsers);
         })
         .catch((err)=>console.log(err))
-        : navigate('/LogIn')}
-    }
-    const onChange= (event) =>{
-        const{ target : { value }} = event;
-        setContent(value);
-    }
-    
-    //------
+    },[])
+    //-----
 
     // ------게시물 리스트 함수
     const [target, setTarget] = useState(null);
@@ -128,28 +102,47 @@ const SPostList = () => {
         navigate(`/PostView/${postid}`)
     }
     //-----
+
+    // 게시글 작성 버튼 함수
+    const onPostingClick = () =>{
+        {localStorage.getItem("ID") ? navigate('/posting/spost') : navigate('/LogIn')}
+    }
+    //-----
     
     // 좋아요(참여하기) 클릭 함수
+    const [cheer,setCheer]=useState(1); // 1이면 아직 누르지 않은 상태, 0이면 누른 상태
     const onCheerClick = (postid) =>{
-        axios.post('https://goodplassu-server.herokuapp.com/cheer',{
+        if(localStorage.getItem("ID")==null){
+            navigate('LogIn'); // 로그인 되어있지 않으면 로그인 페이지로 이동
+        }
+        else{
+        {cheer ?
+        (axios.post('https://goodplassu-server.herokuapp.com/cheer',{ // cheer가 1일때 실행 -> 눌러지지 않은 상태
             "user_key" : localStorage.getItem("ID"),
             "board_key" : postid,
             "isOn" : true
         })
+        .then((res)=>{
+            console.log(res);
+            setCheer(0);
+        })) : (
+            axios.post('https://goodplassu-server.herokuapp.com/cheer',{
+            "user_key" : localStorage.getItem("ID"),
+            "board_key" : postid,
+            "isOn" : false
+        })
+        .then((res)=>{
+            console.log(res);
+            setCheer(1);
+        }))}}
     }
     //-----
 
     return (
         <div>
             <header>
-            <h4>이달의 선행왕 : {monthUserName} point : {maxpoint}</h4>
-            <form onSubmit={onSubmit}>
-                <>
-                <input value={content} onChange={onChange} type='text' placeholder='자신의 선행을 공유해보세요!' maxLength={1000} />
-                <input type='file' name='imgFile' multiple='multiple' onChange={handleAddImages} accept='.jpg,.jpeg,.png'/>
-                <input type='submit' value='POST' />
-                </>
-            </form>
+            <p>이달의 선행왕 : {monthUserName.map((user,index)=>(<>{user.name}</>))} point : {maxpoint}</p>
+            <button onClick={onPostingClick}>게시글 작성하기!</button>
             </header>
             <div className='cardcontainer'>
                 {postLists.map((post,index)=>(
@@ -161,7 +154,8 @@ const SPostList = () => {
                         <p>작성일자 : {moment(post.updated_at).format("YYYY-MM-DD HH:MM")} </p>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
-                        <button onClick={()=>onCheerClick(`${post.id}`)} > 💓 {post.cheer_count}</button>
+                        <button onClick={()=>onCheerClick(`${post.id}`)} > 💓 {cheer ? post.cheer_count : post.cheer_count + 1 }
+                        </button>
                         <p></p>
                     </span>
                 ))}

@@ -54,7 +54,7 @@ const MyPage = () => {
         <div>이달의 포인트: {userInfo.month_point}</div>
         <div><button onClick={onPostClick} width='300px'>내가 쓴 게시물 보기</button></div>
         <div><button onClick={onCommentClick}width='300px'>내가 댓글 쓴 게시물 보기</button></div>
-        <div><button onClick={onCheerClick}width='300px'>내가 좋아요 누른 게시물 보기</button></div>
+        <div><button onClick={onCheerClick}width='300px'>내가 좋아요/참여하기 누른 게시물 보기</button></div>
         <> 
         <span>
         <p>선행 로드맵</p>

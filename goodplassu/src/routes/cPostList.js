@@ -66,8 +66,8 @@ const CPostList = () => {
     const [postLists, setPostLists] = useState([]);
     let pageNumber=1 // usestate로 변경하려고 했는데 이상하게 작동이 안돼서 그냥 변수로 선언
     const [endLoaded,setEndLoaded] = useState(false); // 로딩이 끝났는지 안끝났는지 확인하는 함수
-    const firstloading=1; // 처음 로딩인지 아닌지 구분하기 위함
-    const[lastcursor,SetLastCursor] =useState('');
+    let firstloading=1; // 처음 로딩인지 아닌지 구분하기 위함
+    let lastcursor=null;
     const moment = require('moment'); // 시간 형식 바꿀 때 필요한 라이브러리
 
 
@@ -85,7 +85,7 @@ const CPostList = () => {
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
                 if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
-                    SetLastCursor(res.data[9].post.cursor)
+                    lastcursor=(res.data.post[9]).cursor
                 }
                 // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
                 firstloading=0;
@@ -98,7 +98,7 @@ const CPostList = () => {
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
                 if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
-                    SetLastCursor(res.data[9].post.cursor)
+                    lastcursor=(res.data.post[9]).cursor
                 }
                 // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
             })
@@ -211,7 +211,7 @@ const CPostList = () => {
                         <p>작성일자 : {moment(post.updated_at).format("YYYY-MM-DD HH:MM")} </p>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
-                        <button onClick={()=>console.log('참여하기')} > 참가하기 🙋🏻{cheer ? post.cheer_count : post.cheer_count+1}
+                        <button onClick={()=>onCheerClick(`${post.id}`)} > 참가하기 🙋🏻{cheer ? post.cheer_count : post.cheer_count+1}
                         </button>
                         <p></p>
                     </span>

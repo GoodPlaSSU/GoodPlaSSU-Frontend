@@ -62,7 +62,7 @@ const PostView = () => {
     const [commentcontent, setCommentContent] = useState(""); // 내용 입력할 때
     const onSubmit= (event) =>{
         event.preventDefault();
-        {localStorage.getItem("ID") ?
+        if(localStorage.getItem("ID") == null){navigate('/LogIn'); window.location.reload();}
         axios.post(`https://goodplassu-server.herokuapp.com/comment`,{
             "user_key" : localStorage.getItem("ID"),
             "board_key" : no,
@@ -73,7 +73,6 @@ const PostView = () => {
             window.location.reload();
         })
         .catch((err)=>console.log(err))
-        : navigate('/LogIn')}
     }
     const onChange= (event) =>{
         const{ target : { value }} = event;
@@ -96,9 +95,9 @@ const PostView = () => {
         <div>
         <header> 
             <span><img src={post.writer_portrait} width='30px' height='30px'/> {post.writer_name} </span>
-            <p>작성일자 : {moment(post.updated_at).format('YYYY-MM-DD HH:MM')} 
-                {post.writer_name === localStorage.getItem("ID") ? <button onclick={()=>navigate(`/posting/${no}`)}>수정</button> :<></>}
-                {post.writer_name === localStorage.getItem("ID") ? <button onclick={deletePost}>삭제</button> : <></>}
+            <p>작성일자 : {moment(post.updated_at).format('YYYY-MM-DD HH:MM')}
+            {post.user_key === localStorage.getItem("ID") ? <button onClick={()=>navigate(`/posting/${no}`)}>수정</button> :<></>}
+            {post.user_key === localStorage.getItem("ID") ? <button onClick={deletePost}>삭제</button> : <></>}
             </p>
             <h3>{post.content}</h3>
             {post.image1 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>} {/*이미지가 존재하면 보여주고 아니면 안보여줌*/}
@@ -111,7 +110,7 @@ const PostView = () => {
                 <span className='comment' key={index} >
                 <p>{comment.user_key} {moment(comment.created_at).format("YYYY-MM-DD HH:MM")}</p>
                 <p>내용 : {comment.content} 
-                {comment.user_key===localStorage.getItem("ID") ? <button onclick={()=>deleteComment(`${comment.id}`)}>삭제</button> : <></>}
+                {comment.user_key===localStorage.getItem("ID") ? <button onClick={()=>deleteComment(`${comment.id}`)}>삭제</button> : <></>}
                 </p>
                 </span>
             ))}

@@ -6,9 +6,6 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 const SPostList = () => {
 
-  	const[info,setinfo]=useState('');
-
-
   	useEffect(()=>{
         axios.defaults.withCredentials = true; 
     },[])
@@ -23,7 +20,7 @@ const SPostList = () => {
             setMaxpoint(res.data.maxPoint);
             setMonthUserName(res.data.monthUsers);
         })
-        .catch((err)=>console.log(err))
+        .catch((err)=>console.log('선행왕 오류'))
     },[])
     //-----
 
@@ -33,8 +30,8 @@ const SPostList = () => {
     const [postLists, setPostLists] = useState([]);
     let pageNumber=1 // usestate로 변경하려고 했는데 이상하게 작동이 안돼서 그냥 변수로 선언
     const [endLoaded,setEndLoaded] = useState(false); // 로딩이 끝났는지 안끝났는지 확인하는 함수
-    const firstloading=1; // 처음 로딩인지 아닌지 구분하기 위함
-    const[lastcursor,SetLastCursor] =useState('');
+    let firstloading=1; // 처음 로딩인지 아닌지 구분하기 위함
+    let lastcursor = null;
     const moment = require('moment'); // 시간 형식 바꿀 때 필요한 라이브러리
 
 
@@ -52,7 +49,9 @@ const SPostList = () => {
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
                 if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
-                    SetLastCursor(res.data[9].post.cursor)
+                    console.log((res.data.post[9]).cursor)
+                    lastcursor=(res.data.post[9]).cursor
+                    console.log(lastcursor)
                 }
                 // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
                 firstloading=0;
@@ -65,7 +64,7 @@ const SPostList = () => {
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
                 if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
-                    SetLastCursor(res.data[9].post.cursor)
+                    lastcursor=(res.data.post[9]).cursor
                 }
                 // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
             })
@@ -86,7 +85,7 @@ const SPostList = () => {
         let observer;
         if (target) {
         observer = new IntersectionObserver(onIntersect, {
-            rootMargin: '20px',
+            rootMargin: '40px',
             threshold: 0.7,
         });
         observer.observe(target);

@@ -34,7 +34,7 @@ class LogIn extends Component {
             localStorage.setItem('ID',user["id"]);
             localStorage.setItem('Name',user["name"]);
             localStorage.setItem('Portrait',user["portrait"])
-            window.location.replace('/mypage');
+            window.history.go(-1)
         });
     }
 

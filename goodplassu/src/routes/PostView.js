@@ -1,6 +1,13 @@
+import { Card } from '@mui/material';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 
 const PostView = () => {
     const { no } = useParams(); 
@@ -94,6 +101,7 @@ const PostView = () => {
     return (
         <div>
         <header> 
+            <Card>
             <span><img src={post.writer_portrait} width='30px' height='30px'/> {post.writer_name} </span>
             <p>작성일자 : {moment(post.updated_at).format('YYYY-MM-DD HH:MM')}
             {post.user_key === localStorage.getItem("ID") ? <button onClick={()=>navigate(`/posting/${no}`)}>수정</button> :<></>}
@@ -105,6 +113,7 @@ const PostView = () => {
             {post.image3 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
             {post.image4 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
             <p>💓{post.cheer_count} </p>
+            </Card>
         </header>
             {comments.map((comment,index)=>(
                 <span className='comment' key={index} >

@@ -3,6 +3,14 @@ import { useInView } from "react-intersection-observer"
 import axios from 'axios';
 import styled from "styled-components";
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+
 
 const SPostList = () => {
 
@@ -140,22 +148,32 @@ const SPostList = () => {
     return (
         <div>
             <header>
-            <p>이달의 선행왕 : {monthUserName.map((user,index)=>(<>{user.name}</>))} point : {maxpoint}</p>
+            <Box>
+                <p>이달의 선행왕 : {monthUserName.map((user,index)=>(<>{user.name}</>))} point : {maxpoint}</p>
+            </Box>
             <button onClick={onPostingClick}>게시글 작성하기!</button>
             </header>
             <div className='cardcontainer'>
                 {postLists.map((post,index)=>(
                     <span className='Post' key={index} >
+                        <Card sx={{my: 2, mx:5,px:5, py:3}}>
                         <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)} >
-                        <p>{index+1}</p>
-                        <p>작성자 :{/*<img src={post.writer_portrait}></img>*/}{post.writer_name} </p>
-                        <p>내용 : {post.content} </p>
-                        <p>작성일자 : {moment(post.updated_at).format("YYYY-MM-DD HH:MM")} </p>
+                        <CardHeader avatat={<Avatar src={post.writer_portrait}/>}
+                        title={post.writer_name}
+                        subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
+                        {/* <p>작성자 :<img src={post.writer_portrait}></img>{post.writer_name} </p> */}
+                        <CardContent>
+                            <Typography>
+                                {post.content}
+                            </Typography>
+                        </CardContent>
+                        {/* <CardMedia componet="img"/> */}
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
                         <button onClick={()=>onCheerClick(`${post.id}`)} > 💓 {cheer ? post.cheer_count : post.cheer_count + 1 }
                         </button>
                         <p></p>
+                        </Card>
                     </span>
                 ))}
             </div>

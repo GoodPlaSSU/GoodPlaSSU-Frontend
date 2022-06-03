@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 
 const CPostList = () => {
     const[info,setinfo]=useState('');
@@ -204,16 +211,23 @@ const CPostList = () => {
             <div className='cardcontainer'>
                 {postLists.map((post,index)=>(
                     <span className='Post' key={index} >
+                        <Card sx={{my: 2, mx:5,px:5, py:3}}>
                         <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)}>
-                        <p>{index+1}</p>
-                        <p>작성자 : {post.writer_name} </p>
-                        <p>내용 : {post.content} </p>
-                        <p>작성일자 : {moment(post.updated_at).format("YYYY-MM-DD HH:MM")} </p>
+                        <CardHeader avatat={<Avatar src={post.writer_portrait}/>}
+                        title={post.writer_name}
+                        subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
+                        {/* <p>작성자 :<img src={post.writer_portrait}></img>{post.writer_name} </p> */}
+                        <CardContent>
+                            <Typography>
+                                {post.content}
+                            </Typography>
+                        </CardContent>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
                         <button onClick={()=>onCheerClick(`${post.id}`)} > 참가하기 🙋🏻{cheer ? post.cheer_count : post.cheer_count+1}
                         </button>
                         <p></p>
+                        </Card>
                     </span>
                 ))}
             </div>

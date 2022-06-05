@@ -8,6 +8,7 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 
 const PostView = () => {
     const { no } = useParams(); 
@@ -101,31 +102,39 @@ const PostView = () => {
     return (
         <div>
         <header> 
-            <Card>
-            <span><img src={post.writer_portrait} width='30px' height='30px'/> {post.writer_name} </span>
-            <p>작성일자 : {moment(post.updated_at).format('YYYY-MM-DD HH:MM')}
+            <Card sx={{mx: 'auto', maxWidth: 600, mb: 5, mt: 3}}>
+            <CardHeader avatar={<Avatar sx={{ml: 5}} src={post.writer_portrait}/>}
+                        title={post.writer_name}
+                        titleTypographyProps={{variant:'h2', sx:{...{fontSize: 20}}}}
+                        sx={{mt:2}}
+                        subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
+            <p>
             {post.user_key === localStorage.getItem("ID") ? <button onClick={()=>navigate(`/posting/${no}`)}>수정</button> :<></>}
             {post.user_key === localStorage.getItem("ID") ? <button onClick={deletePost}>삭제</button> : <></>}
             </p>
-            <h3>{post.content}</h3>
+            <CardContent>
+            <Typography sx={{mb: 2}}>{post.content}</Typography>
             {post.image1 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>} {/*이미지가 존재하면 보여주고 아니면 안보여줌*/}
             {post.image2 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
             {post.image3 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
             {post.image4 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
             <p>💓{post.cheer_count} </p>
+            </CardContent>
             </Card>
         </header>
             {comments.map((comment,index)=>(
                 <span className='comment' key={index} >
+                <Card>
                 <p>{comment.user_key} {moment(comment.created_at).format("YYYY-MM-DD HH:MM")}</p>
                 <p>내용 : {comment.content} 
                 {comment.user_key===localStorage.getItem("ID") ? <button onClick={()=>deleteComment(`${comment.id}`)}>삭제</button> : <></>}
                 </p>
+                </Card>
                 </span>
             ))}
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} className='inputcomment'>
                 <>
-                <input value={commentcontent} onChange={onChange} type='text' placeholder='댓글을 작성해보세요!' maxLength={600} />
+                <TextField sx={{width: 400}} multiline='true' variant='standard' value={commentcontent} onChange={onChange} placeholder='댓글을 작성해보세요!' maxLength={600} />
                 <input type='submit' value='작성' />
                 </>
             </form>

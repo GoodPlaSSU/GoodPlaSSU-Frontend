@@ -8,6 +8,7 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 const CPostList = () => {
     const[info,setinfo]=useState('');
@@ -206,14 +207,14 @@ const CPostList = () => {
                 <input type='submit' value='POST' />
                 </>
             </form> */}
-            <button onClick={onPostingClick}>게시글 작성하기!</button>
+            <Button variant="outlined" onClick={onPostingClick}>게시글 작성하기!</Button>
             </header>
             <div className='cardcontainer'>
                 {postLists.map((post,index)=>(
                     <span className='Post' key={index} >
-                        <Card sx={{my: 2, mx:5,px:5, py:3}}>
+                        <Card sx={{mb: 2.5, mx: "auto",px: 5, py: 3, maxWidth: 500}}>
                         <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)}>
-                        <CardHeader avatat={<Avatar src={post.writer_portrait}/>}
+                        <CardHeader avatar={<Avatar src={post.writer_portrait}/>}
                         title={post.writer_name}
                         subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
                         {/* <p>작성자 :<img src={post.writer_portrait}></img>{post.writer_name} </p> */}
@@ -224,9 +225,8 @@ const CPostList = () => {
                         </CardContent>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
-                        <button onClick={()=>onCheerClick(`${post.id}`)} > 참가하기 🙋🏻{cheer ? post.cheer_count : post.cheer_count+1}
-                        </button>
-                        <p></p>
+                        <Button color="secondary" variant="outlined" onClick={()=>onCheerClick(`${post.id}`)} > 참가하기 🙋🏻{cheer ? post.cheer_count : post.cheer_count+1}
+                        </Button>
                         </Card>
                     </span>
                 ))}

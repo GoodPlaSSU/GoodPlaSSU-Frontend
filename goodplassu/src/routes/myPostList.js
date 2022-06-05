@@ -193,14 +193,14 @@ const MyPostList = () =>{
             <div className='cardcontainer'>
             {postLists.map((post,index)=>(
                 <span className='Post' key={index} >
-                    <Card sx={{my: 2, mx:5,px:5, py:3}}>
+                    <Card sx={{mb: 2.5, mx: "auto",px: 5, py: 3, maxWidth: 500}}>
                     <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)} >
-                    <CardHeader avatat={<Avatar src={post.writer_portrait}/>}
+                    <CardHeader avatar={<Avatar src={post.writer_portrait}/>}
                         title={post.writer_name}
                         subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
-                        {/* <p>작성자 :<img src={post.writer_portrait}></img>{post.writer_name} </p> */}
                         <CardContent>
                             <Typography>
+                                {post.writer_portrait}
                                 {post.content}
                             </Typography>
                         </CardContent>

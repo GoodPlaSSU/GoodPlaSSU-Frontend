@@ -162,7 +162,7 @@ const SPostList = () => {
                         <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)} >
                         <CardHeader avatar={<Avatar src={post.writer_portrait}/>}
                         title={post.writer_name}
-                        titleTypographyProps={{variant:'h2', sx:{...{fontSize: 20}}}}
+                        titleTypographyProps={{variant:'h2', sx:{...{fontSize: 20, fontWeight: "bold"}}}}
                         subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
                         <CardContent>
                             <Typography>

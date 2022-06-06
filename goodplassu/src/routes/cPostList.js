@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
@@ -175,15 +175,11 @@ const onCheerClick = async(postid) =>{
     return (
         <div>
              <header>
-            <p>이달의 선행왕 : {monthUserName.map((user,index)=>(<>{user.name}</>))} point : {maxpoint}</p>
-            {/* <form onSubmit={onSubmit}>
-                <>
-                <input value={content} onChange={onChange} type='text' placeholder='같이 선행에 참여해보세요!' maxLength={1000} />
-                <input type='file' name='imgFile' multiple='multiple' onChange={handleAddImages} accept='.jpg,.jpeg,.png' />
-                <input type='submit' value='POST' />
-                </>
-            </form> */}
+             <Box sx={{mt: 4}}>
+             <Typography sx={{fontWeight: 'bold'}}>이달의 선행왕 : {monthUserName.map((user,index)=>(<>{user.name}</>))}</Typography>
+                <Typography sx={{fontWeight: 'bold'}}>선행 포인트 : {maxpoint}</Typography>
             <Button sx={{my: 3}} variant="outlined" onClick={onPostingClick}>게시글 작성하기!</Button>
+            </Box>
             </header>
             <div>
                 {postLists.map((post,index)=>(

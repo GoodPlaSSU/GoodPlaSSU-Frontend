@@ -1,19 +1,15 @@
+/* eslint-disable */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from "react-intersection-observer"
 import axios from 'axios';
-import styled from "styled-components";
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { fontSize } from '@mui/system';
-import Checkbox from '@mui/material/Checkbox';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
@@ -127,8 +123,9 @@ const SPostList = () => {
     return (
         <div>
             <header>
-            <Box sx={{mt: 5}}>
-                <Typography>이달의 선행왕 : {monthUserName.map((user,index)=>(<>{user.name}</>))} point : {maxpoint}</Typography>
+            <Box sx={{mt: 4}}>
+                <Typography sx={{fontWeight: 'bold'}}>이달의 선행왕 : {monthUserName.map((user,index)=>(<>{user.name}</>))}</Typography>
+                <Typography sx={{fontWeight: 'bold'}}>선행 포인트 : {maxpoint}</Typography>
             </Box>
             <Button variant="outlined" sx={{my: 3}} onClick={onPostingClick}>게시글 작성하기!</Button>
             </header>

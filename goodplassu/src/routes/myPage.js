@@ -4,8 +4,6 @@ import {useGoolgeLogout} from 'react-google-login';
 import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { Card } from '@mui/material';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';

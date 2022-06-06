@@ -1,10 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';

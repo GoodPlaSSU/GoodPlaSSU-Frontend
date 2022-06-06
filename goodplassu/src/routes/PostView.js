@@ -14,7 +14,6 @@ import Divider from '@mui/material/Divider';
 const PostView = () => {
     const { no } = useParams(); 
     const [ post, setPost ] = useState([]); // 게시물 상세보기
-    const moment = require('moment'); // 시간 형식 바꿀 때 필요한 라이브러리
     const navigate = useNavigate();
     
   	useEffect(()=>{
@@ -56,8 +55,8 @@ const PostView = () => {
     const commentLoading = async() =>{
         await axios.get(`https://goodplassu-server.herokuapp.com/comment`, {params : {id : no}})
         .then((res)=>{
+            console.log(res.data.comment)
             setComments(res.data.comment);
-            console.log(comments);
         })
         .catch((err)=>console.log(err))
     }
@@ -136,10 +135,11 @@ const PostView = () => {
                 }}
     //-----
 
-    // 날짜 함수
+    // 날짜 보여주기 함수
     const Date = (date) => {
-        return date.substr(0,10)+' '+date.slice(11,16)
+        return date.substr(0,10) + ' ' + date.slice(11,16)
     }
+    //-----
 
     return (
         <div>
@@ -179,8 +179,8 @@ const PostView = () => {
                 </p>
                 </Card>
                 </span>
-            )) : <></>}
-            <form onSubmit={onSubmit} className='inputcomment'>
+            )) : <></> }
+            <form onSubmit={onSubmit}>
                 <>
                 <TextField sx={{width: 400}} multiline='true' variant='standard' value={commentcontent} onChange={onChange} placeholder='댓글을 작성해보세요!' maxLength={600} />
                 <input type='submit' value='작성' />

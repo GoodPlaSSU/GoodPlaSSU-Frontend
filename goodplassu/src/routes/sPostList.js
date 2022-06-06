@@ -111,41 +111,6 @@ const SPostList = () => {
         {localStorage.getItem("ID") ? navigate('/posting/spost') : navigate('/LogIn')}
     }
     //-----
-    
-    // 좋아요(참여하기) 클릭 함수
-    let cheerison = true;
-    const onCheerClick = async(postid) =>{
-        if(localStorage.getItem("ID")==null){
-            navigate('/LogIn'); // 로그인 되어있지 않으면 로그인 페이지로 이동
-        }
-        else{
-            await axios.get(`https://goodplassu-server.herokuapp.com/cheer`,{params :{user_key:localStorage.getItem("ID"),board_key:postid}})
-            .then((res)=>{
-                cheerison=res.data.is_on
-                console.log(cheerison)
-            })
-            .catch((err)=>console.log(err))
-            {cheerison ?
-            (await axios.post('https://goodplassu-server.herokuapp.com/cheer',{ // cheer가 1일때 실행 -> 눌러지지 않은 상태
-                "user_key" : localStorage.getItem("ID"),
-                "board_key" : postid,
-                "isOn" : false
-            })
-            .then((res)=>{
-                console.log('좋아요 취소')
-                console.log(res);
-            })) : (
-                await axios.post('https://goodplassu-server.herokuapp.com/cheer',{
-                "user_key" : localStorage.getItem("ID"),
-                "board_key" : postid,
-                "isOn" : true
-            })
-            .then((res)=>{
-                console.log('좋아요')
-                console.log(res);
-            }))}}
-    }
-    //-----
 
     return (
         <div>
@@ -163,7 +128,7 @@ const SPostList = () => {
                         <p>작성일자 : {post.updated_at.substr(0,10) + ' ' + post.updated_at.slice(11,16)} </p>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
-                        <span onClick={()=>onCheerClick(post.id)}> {post.is_on ? '💖' : '🤍'}</span>
+                        <span> {post.is_on ? '💖' : '🤍'} {post.cheer_count}</span>
                         <p></p>
                     </span>
                 ))}

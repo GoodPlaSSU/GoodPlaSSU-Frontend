@@ -84,9 +84,6 @@ const Posting = () =>{
     
     // 이미지 업로드 함수
     const formData = new FormData();
-    const formData2 = new FormData();
-    const formData3 = new FormData();
-    const formData4 = new FormData();
     let image1=null;
     let image2=null;
     let image3=null;

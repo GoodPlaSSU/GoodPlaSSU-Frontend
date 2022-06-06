@@ -187,7 +187,7 @@ const onCheerClick = async(postid) =>{
                         <p>작성일자 : {moment(post.updated_at).format("YYYY-MM-DD HH:MM")} </p>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
-                        <button onClick={()=>onCheerClick(`${post.id}`)} > 참가하기 🙋🏻{ post.cheer_count }
+                        <button> 참가하기 🙋🏻{post.cheer_count}
                         </button>
                         <p></p>
                         {index === 9 ? <a href={ads[i].link}><img src={ads[i++].image} /> </a> : <></>}

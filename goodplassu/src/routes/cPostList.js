@@ -40,8 +40,8 @@ const CPostList = () => {
     const [endLoaded,setEndLoaded] = useState(false); // 로딩이 끝났는지 안끝났는지 확인하는 함수
     let firstloading=1; // 처음 로딩인지 아닌지 구분하기 위함
     let lastcursor=null;
-    let firstparameter = {params:{tag:1,cursor:'999999999999999999999999',user_key:localStorage.getItem("ID")}};
-    let nextparameter = {params:{tag:1,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
+    let firstparameter = {params: {tag: 1,cursor: '999999999999999999999999',user_key:localStorage.getItem("ID")}};
+    let nextparameter = {params: {tag: 1,cursor: lastcursor,user_key:localStorage.getItem("ID")}};
 
 
     useEffect(() => {

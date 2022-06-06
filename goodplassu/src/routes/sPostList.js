@@ -61,7 +61,7 @@ const SPostList = () => {
                 else {
                     console.log((res.data.post[9]).cursor)
                     lastcursor=(res.data.post[9]).cursor
-                    nextparameter = {params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
+                    nextparameter={params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
                 }
                 // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
                 firstloading=0;
@@ -76,7 +76,7 @@ const SPostList = () => {
                 if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
                     lastcursor=(res.data.post[9]).cursor
-                    nextparameter = {params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
+                    nextparameter={params: {tag: 0, cursor: lastcursor, user_key: localStorage.getItem("ID")}};
                 }
                 // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
             })
@@ -124,7 +124,7 @@ const SPostList = () => {
         <div>
             <header>
             <Box sx={{mt: 4}}>
-                <Typography sx={{fontWeight: 'bold'}}>이달의 선행왕 : {monthUserName.map((user,index)=>(<>{user.name}</>))}</Typography>
+                <Typography sx={{fontWeight: 'bold'}}>이달의 선행왕 : {monthUserName.map((user, index)=>(<>{user.name}</>))}</Typography>
                 <Typography sx={{fontWeight: 'bold'}}>선행 포인트 : {maxpoint}</Typography>
             </Box>
             <Button variant="outlined" sx={{my: 3}} onClick={onPostingClick}>게시글 작성하기!</Button>
@@ -132,11 +132,11 @@ const SPostList = () => {
             <div className='cardcontainer'>
                 {postLists.map((post,index)=>(
                     <span className='Post' key={index} >
-                        <Card sx={{mb: 2.5, mx: "auto",px: 5, pb: 3, maxWidth: 500}}>
+                        <Card sx={{mb: 2.5, mx: "auto", px: 5, pb: 3, maxWidth: 500}}>
                         <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)} >
                         <CardHeader avatar={<Avatar src={post.writer_portrait}/>}
                         title={post.writer_name}
-                        titleTypographyProps={{variant:'h2', sx:{...{fontSize: 20, fontWeight: "bold"}}}}
+                        titleTypographyProps={{variant: 'h2', sx: {...{fontSize: 20, fontWeight: "bold"}}}}
                         subheader={post.updated_at.substr(0,10)+' '+post.updated_at.slice(11,16)}/>
                         <CardContent>
                             <Typography>

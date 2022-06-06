@@ -166,18 +166,18 @@ const MyPostList = () =>{
         else{
         {cheer ?
         (axios.post('https://goodplassu-server.herokuapp.com/cheer',{ // cheer가 1일때 실행 -> 눌러지지 않은 상태
-            "user_key" : localStorage.getItem("ID"),
-            "board_key" : postid,
-            "isOn" : true
+            "user_key": localStorage.getItem("ID"),
+            "board_key": postid,
+            "isOn": true
         })
         .then((res)=>{
             console.log(res);
             setCheer(0);
         })) : (
             axios.post('https://goodplassu-server.herokuapp.com/cheer',{
-            "user_key" : localStorage.getItem("ID"),
-            "board_key" : postid,
-            "isOn" : false
+            "user_key": localStorage.getItem("ID"),
+            "board_key": postid,
+            "isOn": false
         })
         .then((res)=>{
             console.log(res);

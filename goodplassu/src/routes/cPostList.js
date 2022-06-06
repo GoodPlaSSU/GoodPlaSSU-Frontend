@@ -151,18 +151,18 @@ const onCheerClick = async(postid) =>{
         .catch((err)=>console.log(err))
         {cheerison ?
         (await axios.post('https://goodplassu-server.herokuapp.com/cheer',{ // cheer가 1일때 실행 -> 눌러지지 않은 상태
-            "user_key" : localStorage.getItem("ID"),
-            "board_key" : postid,
-            "isOn" : false
+            "user_key": localStorage.getItem("ID"),
+            "board_key": postid,
+            "isOn": false
         })
         .then((res)=>{
             console.log('좋아요 취소')
             console.log(res);
         })) : (
             await axios.post('https://goodplassu-server.herokuapp.com/cheer',{
-            "user_key" : localStorage.getItem("ID"),
-            "board_key" : postid,
-            "isOn" : true
+            "user_key": localStorage.getItem("ID"),
+            "board_key": postid,
+            "isOn": true
         })
         .then((res)=>{
             console.log('좋아요')

@@ -145,7 +145,7 @@ const PostView = () => {
             <Card sx={{mx: 'auto', maxWidth: 600, mb: 5, mt: 3}}>
             <CardHeader avatar={<Avatar sx={{ml: 5}} src={post.writer_portrait}/>}
                         title={post.writer_name}
-                        titleTypographyProps={{variant: 'h2', sx:{...{fontSize: 20}}}}
+                        titleTypographyProps={{variant: 'h2', sx: {...{fontSize: 20}}}}
                         sx={{mt: 2}}
                         subheader={Date(String(post.updated_at))}/>
             <p>
@@ -163,13 +163,13 @@ const PostView = () => {
             </Card>
         </header>
         <Divider sx={{mb: 2}}/>
-        <Typography sx={{my:'auto', mb: 2, fontWeight: 'bold'}}>댓글</Typography>
+        <Typography sx={{my: 'auto', mb: 2, fontWeight: 'bold'}}>댓글</Typography>
             {comments? comments.map((comment,index)=>(
                 <span className='comment' key={index} >
                 <Card sx={{maxWidth: 600, mx: 'auto', mb: 0.5}}>
                 <CardHeader avatar={<Avatar src={comment.writer_portrait}/>}
                         title={comment.writer_name}
-                        titleTypographyProps={{variant:'h2', sx: {...{fontSize: 15, fontWeight: "bold"}}}}
+                        titleTypographyProps={{variant: 'h2', sx: {...{fontSize: 15, fontWeight: "bold"}}}}
                         subheader={Date(String(comment.created_at))+' '}
                         subheaderTypographyProps={{sx: {...{fontSize: 12}}}}/>
                 <p>{comment.content} 

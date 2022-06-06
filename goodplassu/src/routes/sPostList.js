@@ -12,6 +12,9 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { fontSize } from '@mui/system';
+import Checkbox from '@mui/material/Checkbox';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 
 const SPostList = () => {
@@ -43,6 +46,8 @@ const SPostList = () => {
     let firstloading=1; // 처음 로딩인지 아닌지 구분하기 위함
     let lastcursor = null;
     const moment = require('moment'); // 시간 형식 바꿀 때 필요한 라이브러리
+    let firstparameter = {params:{tag:0,cursor:'999999999999999999999999',user_key:localStorage.getItem("ID")}};
+    let nextparameter = {params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
 
 
     useEffect(() => {
@@ -53,7 +58,7 @@ const SPostList = () => {
         setIsLoaded(true);
         console.log('loading')
         if(firstloading){
-            await axios.get(`https://goodplassu-server.herokuapp.com/board`,{params :{tag:0,cursor: '999999999999999999999999'}})
+            await axios.get(`https://goodplassu-server.herokuapp.com/board`,firstparameter)
             .then((res) => {
                 console.log(res)
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
@@ -61,20 +66,22 @@ const SPostList = () => {
                 else {
                     console.log((res.data.post[9]).cursor)
                     lastcursor=(res.data.post[9]).cursor
-                    console.log(lastcursor)
+                    nextparameter = {params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
                 }
                 // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
                 firstloading=0;
             })
         }
         else{
-            await axios.get(`https://goodplassu-server.herokuapp.com/board`,{params :{tag:0,cursor:lastcursor}}) // json-server에서 페이지 네이션 하는 법
+            await axios.get(`https://goodplassu-server.herokuapp.com/board`,nextparameter) // json-server에서 페이지 네이션 하는 법
             .then((res) => {
+                console.log(nextparameter)
                 console.log(res)
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
                 if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
                     lastcursor=(res.data.post[9]).cursor
+                    nextparameter = {params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
                 }
                 // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
             })
@@ -119,31 +126,37 @@ const SPostList = () => {
     //-----
     
     // 좋아요(참여하기) 클릭 함수
-    const [cheer,setCheer]=useState(1); // 1이면 아직 누르지 않은 상태, 0이면 누른 상태
-    const onCheerClick = (postid) =>{
+    let cheerison = true;
+    const onCheerClick = async(postid) =>{
         if(localStorage.getItem("ID")==null){
-            navigate('LogIn'); // 로그인 되어있지 않으면 로그인 페이지로 이동
+            navigate('/LogIn'); // 로그인 되어있지 않으면 로그인 페이지로 이동
         }
         else{
-        {cheer ?
-        (axios.post('https://goodplassu-server.herokuapp.com/cheer',{ // cheer가 1일때 실행 -> 눌러지지 않은 상태
-            "user_key" : localStorage.getItem("ID"),
-            "board_key" : postid,
-            "isOn" : true
-        })
-        .then((res)=>{
-            console.log(res);
-            setCheer(0);
-        })) : (
-            axios.post('https://goodplassu-server.herokuapp.com/cheer',{
-            "user_key" : localStorage.getItem("ID"),
-            "board_key" : postid,
-            "isOn" : false
-        })
-        .then((res)=>{
-            console.log(res);
-            setCheer(1);
-        }))}}
+            await axios.get(`https://goodplassu-server.herokuapp.com/cheer`,{params :{user_key:localStorage.getItem("ID"),board_key:postid}})
+            .then((res)=>{
+                cheerison=res.data.is_on
+                console.log(cheerison)
+            })
+            .catch((err)=>console.log(err))
+            {cheerison ?
+            (await axios.post('https://goodplassu-server.herokuapp.com/cheer',{ // cheer가 1일때 실행 -> 눌러지지 않은 상태
+                "user_key" : localStorage.getItem("ID"),
+                "board_key" : postid,
+                "isOn" : false
+            })
+            .then((res)=>{
+                console.log('좋아요 취소')
+                console.log(res);
+            })) : (
+                await axios.post('https://goodplassu-server.herokuapp.com/cheer',{
+                "user_key" : localStorage.getItem("ID"),
+                "board_key" : postid,
+                "isOn" : true
+            })
+            .then((res)=>{
+                console.log('좋아요')
+                console.log(res);
+            }))}}
     }
     //-----
 
@@ -171,8 +184,10 @@ const SPostList = () => {
                         </CardContent>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
-                        <Button color="error" variant='outlined' onClick={()=>onCheerClick(`${post.id}`)} > 💓 {cheer ? post.cheer_count : post.cheer_count + 1 }
-                        </Button>
+                        {/* <Button color="error" variant='outlined' onClick={()=>onCheerClick(`${post.id}`)} > 💓 {cheer ? post.cheer_count : post.cheer_count + 1 }
+                        </Button> */}
+                        <Checkbox onChange={()=>onCheerClick(post.id)} icon={<FavoriteBorderIcon/>} checkedIcon={<FavoriteIcon color='error'/>}/>
+                        {/* <span onClick={()=>onCheerClick(post.id)}> {post.is_on ? '💖' : '🤍'}</span> */}
                         <p></p>
                         </Card>
                     </span>

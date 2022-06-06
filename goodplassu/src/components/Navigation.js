@@ -30,7 +30,7 @@ const Navigation = () =>{
 
     return(
         <Box sx={{width:'100%', color:"background.paper", bgcolor:'info.main'}}>
-            <Tabs textColor="" value={false} centered={true}>
+            <Tabs textColor="paper" value={false} centered={true}>
                 <Typography align='left' sx={{
                     mt:1,
                     mr:1,

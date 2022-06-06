@@ -9,6 +9,7 @@ import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import Divider from '@mui/material/Divider';
 
 const PostView = () => {
     const { no } = useParams(); 
@@ -55,7 +56,7 @@ const PostView = () => {
     const commentLoading = async() =>{
         await axios.get(`https://goodplassu-server.herokuapp.com/comment`, {params : {id : no}})
         .then((res)=>{
-            setComments(res.data.comments);
+            setComments(res.data.comment);
             console.log(comments);
         })
         .catch((err)=>console.log(err))
@@ -135,6 +136,11 @@ const PostView = () => {
                 }}
     //-----
 
+    // 날짜 함수
+    const Date = (date) => {
+        return date.substr(0,10)+' '+date.slice(11,16)
+    }
+
     return (
         <div>
         <header> 
@@ -143,7 +149,7 @@ const PostView = () => {
                         title={post.writer_name}
                         titleTypographyProps={{variant: 'h2', sx:{...{fontSize: 20}}}}
                         sx={{mt: 2}}
-                        subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
+                        subheader={Date(String(post.updated_at))}/>
             <p>
             {post.user_key === localStorage.getItem("ID") ? <button onClick={()=>navigate(`/posting/${no}`)}>수정</button> :<></>}
             {post.user_key === localStorage.getItem("ID") ? <button onClick={deletePost}>삭제</button> : <></>}
@@ -151,23 +157,29 @@ const PostView = () => {
             <CardContent>
             <Typography sx={{mb: 2}}>{post.content}</Typography>
             {post.image1 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>} {/*이미지가 존재하면 보여주고 아니면 안보여줌*/}
-            {post.image2 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
-            {post.image3 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
-            {post.image4 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
+            {post.image2 ? <img src={post.image2} width = 'auto' height='150px'/> :<p></p>}
+            {post.image3 ? <img src={post.image3} width = 'auto' height='150px'/> :<p></p>}
+            {post.image4 ? <img src={post.image4} width = 'auto' height='150px'/> :<p></p>}
             <span onClick={onCheerClick}> {ison ? '💖' : '🤍'} {firstison ? (ison ? post.cheer_count : post.cheer_count-1) : (ison ? post.cheer_count+1 : post.cheer_count) } </span>
             </CardContent>
             </Card>
         </header>
-            {comments.map((comment,index)=>(
+        <Divider sx={{mb: 2}}/>
+        <Typography sx={{my:'auto', mb: 2, fontWeight: 'bold'}}>댓글</Typography>
+            {comments? comments.map((comment,index)=>(
                 <span className='comment' key={index} >
-                <Card>
-                <p>{comment.user_name} {moment(comment.created_at).format("YYYY-MM-DD HH:MM")}</p>
-                <p>내용 : {comment.content} 
+                <Card sx={{maxWidth: 600, mx: 'auto', mb: 0.5}}>
+                <CardHeader avatar={<Avatar src={comment.writer_portrait}/>}
+                        title={comment.writer_name}
+                        titleTypographyProps={{variant:'h2', sx: {...{fontSize: 15, fontWeight: "bold"}}}}
+                        subheader={Date(String(comment.created_at))+' '}
+                        subheaderTypographyProps={{sx: {...{fontSize: 12}}}}/>
+                <p>{comment.content} 
                 {comment.user_key===localStorage.getItem("ID") ? <button onClick={()=>deleteComment(`${comment.id}`)}>삭제</button> : <></>}
                 </p>
                 </Card>
                 </span>
-            ))}
+            )) : <></>}
             <form onSubmit={onSubmit} className='inputcomment'>
                 <>
                 <TextField sx={{width: 400}} multiline='true' variant='standard' value={commentcontent} onChange={onChange} placeholder='댓글을 작성해보세요!' maxLength={600} />

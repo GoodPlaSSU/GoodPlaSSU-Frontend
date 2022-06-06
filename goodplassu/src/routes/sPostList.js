@@ -15,7 +15,7 @@ import { fontSize } from '@mui/system';
 import Checkbox from '@mui/material/Checkbox';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 const SPostList = () => {
 
@@ -45,7 +45,6 @@ const SPostList = () => {
     const [endLoaded,setEndLoaded] = useState(false); // 로딩이 끝났는지 안끝났는지 확인하는 함수
     let firstloading=1; // 처음 로딩인지 아닌지 구분하기 위함
     let lastcursor = null;
-    const moment = require('moment'); // 시간 형식 바꿀 때 필요한 라이브러리
     let firstparameter = {params:{tag:0,cursor:'999999999999999999999999',user_key:localStorage.getItem("ID")}};
     let nextparameter = {params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
 
@@ -176,7 +175,7 @@ const SPostList = () => {
                         <CardHeader avatar={<Avatar src={post.writer_portrait}/>}
                         title={post.writer_name}
                         titleTypographyProps={{variant:'h2', sx:{...{fontSize: 20, fontWeight: "bold"}}}}
-                        subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
+                        subheader={post.updated_at.substr(0,10)+' '+post.updated_at.slice(11,16)}/>
                         <CardContent>
                             <Typography>
                                 {post.content}
@@ -184,11 +183,9 @@ const SPostList = () => {
                         </CardContent>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
-                        {/* <Button color="error" variant='outlined' onClick={()=>onCheerClick(`${post.id}`)} > 💓 {cheer ? post.cheer_count : post.cheer_count + 1 }
-                        </Button> */}
-                        <Checkbox onChange={()=>onCheerClick(post.id)} icon={<FavoriteBorderIcon/>} checkedIcon={<FavoriteIcon color='error'/>}/>
-                        {/* <span onClick={()=>onCheerClick(post.id)}> {post.is_on ? '💖' : '🤍'}</span> */}
-                        <p></p>
+                        <Typography>
+                        {post.is_on? <FavoriteIcon color='error'/>:<FavoriteIcon color='disabled'/>} {post.cheer_count}  <PersonOutlineIcon sx={{ml: 2}}/> {post.view_count}
+                        </Typography>
                         </Card>
                     </span>
                 ))}

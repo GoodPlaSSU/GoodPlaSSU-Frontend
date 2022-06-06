@@ -9,6 +9,10 @@ import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 
 const CPostList = () => {
     const[info,setinfo]=useState('');
@@ -39,7 +43,6 @@ const CPostList = () => {
     const [endLoaded,setEndLoaded] = useState(false); // 로딩이 끝났는지 안끝났는지 확인하는 함수
     let firstloading=1; // 처음 로딩인지 아닌지 구분하기 위함
     let lastcursor=null;
-    const moment = require('moment'); // 시간 형식 바꿀 때 필요한 라이브러리
     let firstparameter = {params:{tag:1,cursor:'999999999999999999999999',user_key:localStorage.getItem("ID")}};
     let nextparameter = {params:{tag:1,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
 
@@ -192,7 +195,7 @@ const onCheerClick = async(postid) =>{
                         <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)}>
                         <CardHeader avatar={<Avatar src={post.writer_portrait}/>}
                         title={post.writer_name}
-                        subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
+                        subheader={post.updated_at.substr(0,10)+' '+post.updated_at.slice(11,16)}/>
                         <CardContent>
                             <Typography>
                                 {post.content}
@@ -200,8 +203,11 @@ const onCheerClick = async(postid) =>{
                         </CardContent>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
-                        <Button color="secondary" variant="outlined" onClick={()=>onCheerClick(`${post.id}`)} > 참가하기 🙋🏻{post.cheer_count}
-                        </Button>
+                        <Typography>
+                        {post.is_on? <PeopleAltIcon color='info'/>:<PeopleAltIcon color='disabled'/>} {post.cheer_count}  
+                        <PersonOutlineIcon sx={{ml: 2}}/> {post.view_count}
+                        </Typography>
+                        
                         </Card>
                         <p></p>
                         {index === 9 ? <a href={ads[i].link}><img src={ads[i++].image} /> </a> : <></>}

@@ -91,6 +91,42 @@ const PostView = () => {
     }
     //-----
 
+    // 좋아요(참여하기) 클릭 함수
+    const [ison,setIson]=useState();
+    const [firstison,setFirstison]=useState(); // 처음에 눌러져있는지 안눌러져있는지 중요함..ㅠ
+    useEffect(()=>{
+        axios.get(`https://goodplassu-server.herokuapp.com/cheer`,{params :{user_key:localStorage.getItem("ID"),board_key: no}})
+        .then((res)=>{
+            setIson(res.data.is_on)
+            setFirstison(res.data.is_on)
+        })
+    },[])
+
+    const onCheerClick = () =>{
+        if(localStorage.getItem("ID")==null){
+            navigate('/LogIn'); // 로그인 되어있지 않으면 로그인 페이지로 이동
+        }
+        else{ison ?( //true -> 이미 눌러져 있음 
+                    axios.post('https://goodplassu-server.herokuapp.com/cheer',
+                    {"user_key" : localStorage.getItem("ID"),
+                    "board_key" : no,
+                    "isOn" : false})
+                    .then((res)=>{
+                        console.log(res);
+                        setIson(0);
+                        console.log('좋아요 취소');
+                    })) : (axios.post('https://goodplassu-server.herokuapp.com/cheer',
+                    {"user_key" : localStorage.getItem("ID"),
+                    "board_key" : no,
+                    "isOn" : true})
+                    .then((res)=>{
+                    console.log(res);
+                    setIson(1);
+                    console.log('좋아요');
+                    }))
+                }}
+    //-----
+
     return (
         <div>
         <header> 
@@ -104,7 +140,7 @@ const PostView = () => {
             {post.image2 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
             {post.image3 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
             {post.image4 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
-            <p>💓{post.cheer_count} </p>
+            <span onClick={onCheerClick}> {ison ? '💖' : '🤍'} {firstison ? (ison ? post.cheer_count : post.cheer_count-1) : (ison ? post.cheer_count+1 : post.cheer_count) } </span>
         </header>
             {comments.map((comment,index)=>(
                 <span className='comment' key={index} >

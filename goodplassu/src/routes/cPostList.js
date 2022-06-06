@@ -23,43 +23,6 @@ const CPostList = () => {
     },[])
     //-----
 
-    // 이미지 업로드 함수
-    // const [imageLists,setImageLists] =useState([]);
-    // const handleAddImages = (event) =>{ //이미지 넣었을 때
-    //     setImageLists(event.target.files);
-    //     if (imageLists.length > 4) {
-    //         setImageLists(imageLists.slice(0, 4));
-    //     }
-    // };
-    //------
-
-    //------ 게시글 작성 함수
-    // const [content, setContent] = useState(""); // 내용 입력할 때
-    // const onSubmit= (event) =>{
-    //     event.preventDefault();
-    //     {localStorage.getItem("ID") ?
-    //     axios.post(`https://goodplassu-server.herokuapp.com/board/`,{
-    //         "user_key" : localStorage.getItem("ID"),
-    //         "content" : content,
-    //         "image1" : imageLists[0],
-    //         "image2" : imageLists[1],
-    //         "image3" : imageLists[2],
-    //         "image4" : imageLists[3],
-    //         "tag" : 1
-    //     })
-    //     .then((res)=>{
-    //         console.log(res);
-    //         window.location.reload();
-    //     })
-    //     .catch((err)=>console.log(err))
-    //     : navigate('/LogIn')}
-    // }
-    // const onChange= (event) =>{
-    //     const{ target : { value }} = event;
-    //     setContent(value);
-    // }
-    //------
-
     // 게시물 불러오기 함수
     const [target, setTarget] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -69,6 +32,8 @@ const CPostList = () => {
     let firstloading=1; // 처음 로딩인지 아닌지 구분하기 위함
     let lastcursor=null;
     const moment = require('moment'); // 시간 형식 바꿀 때 필요한 라이브러리
+    let firstparameter = {params:{tag:1,cursor:'999999999999999999999999',user_key:localStorage.getItem("ID")}};
+    let nextparameter = {params:{tag:1,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
 
 
     useEffect(() => {
@@ -79,26 +44,30 @@ const CPostList = () => {
         setIsLoaded(true);
         console.log('loading')
         if(firstloading){
-            await axios.get(`https://goodplassu-server.herokuapp.com/board`,{params :{tag:1,cursor: '999999999999999999999999'}})
+            await axios.get(`https://goodplassu-server.herokuapp.com/board`,firstparameter)
             .then((res) => {
                 console.log(res)
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
                 if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
+                    console.log((res.data.post[9]).cursor)
                     lastcursor=(res.data.post[9]).cursor
+                    nextparameter = {params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
                 }
                 // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
                 firstloading=0;
             })
         }
         else{
-            await axios.get(`https://goodplassu-server.herokuapp.com/board`,{params :{tag:1,cursor:{lastcursor}}}) // json-server에서 페이지 네이션 하는 법
+            await axios.get(`https://goodplassu-server.herokuapp.com/board`,nextparameter) // json-server에서 페이지 네이션 하는 법
             .then((res) => {
+                console.log(nextparameter)
                 console.log(res)
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
                 if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
                     lastcursor=(res.data.post[9]).cursor
+                    nextparameter = {params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
                 }
                 // endloaded가 true면 target이 변하지 않고, 로딩완료가 뜸
             })
@@ -159,34 +128,41 @@ const CPostList = () => {
     }
     //-----
 
-    // 좋아요(참여하기) 클릭 함수
-    const [cheer,setCheer]=useState(1); // 1이면 아직 누르지 않은 상태, 0이면 누른 상태
-    const onCheerClick = (postid) =>{
-        if(localStorage.getItem("ID")==null){
-            navigate('LogIn'); // 로그인 되어있지 않으면 로그인 페이지로 이동
-        }
-        else{
-        {cheer ?
-        (axios.post('https://goodplassu-server.herokuapp.com/cheer',{ // cheer가 1일때 실행 -> 눌러지지 않은 상태
-            "user_key" : localStorage.getItem("ID"),
-            "board_key" : postid,
-            "isOn" : true
-        })
+// 좋아요(참여하기) 클릭 함수
+let cheerison = true;
+const onCheerClick = async(postid) =>{
+    if(localStorage.getItem("ID")==null){
+        navigate('/LogIn'); // 로그인 되어있지 않으면 로그인 페이지로 이동
+    }
+    else{
+        await axios.get(`https://goodplassu-server.herokuapp.com/cheer`,{params :{user_key:localStorage.getItem("ID"),board_key:postid}})
         .then((res)=>{
-            console.log(res);
-            setCheer(0);
-        })) : (
-            axios.post('https://goodplassu-server.herokuapp.com/cheer',{
+            cheerison=res.data.is_on
+            console.log(cheerison)
+        })
+        .catch((err)=>console.log(err))
+        {cheerison ?
+        (await axios.post('https://goodplassu-server.herokuapp.com/cheer',{ // cheer가 1일때 실행 -> 눌러지지 않은 상태
             "user_key" : localStorage.getItem("ID"),
             "board_key" : postid,
             "isOn" : false
         })
         .then((res)=>{
+            console.log('좋아요 취소')
             console.log(res);
-            setCheer(1);
+        })) : (
+            await axios.post('https://goodplassu-server.herokuapp.com/cheer',{
+            "user_key" : localStorage.getItem("ID"),
+            "board_key" : postid,
+            "isOn" : true
+        })
+        .then((res)=>{
+            console.log('좋아요')
+            console.log(res);
         }))}}
     }
     //-----
+
 
     return (
         <div>
@@ -201,7 +177,7 @@ const CPostList = () => {
             </form> */}
             <button onClick={onPostingClick}>게시글 작성하기!</button>
             </header>
-            <div className='cardcontainer'>
+            <div>
                 {postLists.map((post,index)=>(
                     <span className='Post' key={index} >
                         <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)}>
@@ -211,21 +187,20 @@ const CPostList = () => {
                         <p>작성일자 : {moment(post.updated_at).format("YYYY-MM-DD HH:MM")} </p>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
-                        <button onClick={()=>onCheerClick(`${post.id}`)} > 참가하기 🙋🏻{cheer ? post.cheer_count : post.cheer_count+1}
+                        <button onClick={()=>onCheerClick(`${post.id}`)} > 참가하기 🙋🏻{ post.cheer_count }
                         </button>
                         <p></p>
+                        {index === 9 ? <a href={ads[i].link}><img src={ads[i++].image} /> </a> : <></>}
                     </span>
-                ))}
+                ))  
+                }
             </div>
-            { ads.length - i ? 
-            (<a href={ads[i].link}>
-                <img src={ads[i++].image} />
-            </a>) : <></>}
+            {ads.length - i ? (<a href={ads[i].link}><img src={ads[i++].image} /></a>) : <></>}
             <> 
             {endLoaded ? <p> 마지막 게시물 입니다. </p>  :
             <div ref={setTarget} className='Target Element'>{isLoaded &&"로딩중 .. 기다려주세요"}</div>}
             </>
-            
+
         </div>
     );
 };

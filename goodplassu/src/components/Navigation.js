@@ -10,7 +10,7 @@ const Navigation = () =>{
     }
     const onLogOutClick = () => {
         window.localStorage.clear();
-        navigate('/');
+        window.location.reload();
         }
 
     return(

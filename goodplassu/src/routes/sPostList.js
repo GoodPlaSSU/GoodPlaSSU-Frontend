@@ -33,7 +33,6 @@ const SPostList = () => {
     const [endLoaded,setEndLoaded] = useState(false); // 로딩이 끝났는지 안끝났는지 확인하는 함수
     let firstloading=1; // 처음 로딩인지 아닌지 구분하기 위함
     let lastcursor = null;
-    const moment = require('moment'); // 시간 형식 바꿀 때 필요한 라이브러리
     let firstparameter = {params:{tag:0,cursor:'999999999999999999999999',user_key:localStorage.getItem("ID")}};
     let nextparameter = {params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
 
@@ -161,7 +160,7 @@ const SPostList = () => {
                         <p>{index+1}</p>
                         <p>작성자 :{/*<img src={post.writer_portrait}></img>*/}{post.writer_name} </p>
                         <p>내용 : {post.content} </p>
-                        <p>작성일자 : {moment(post.updated_at).format("YYYY-MM-DD HH:MM")} </p>
+                        <p>작성일자 : {post.updated_at.substr(0,10) + ' ' + post.updated_at.slice(11,16)} </p>
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
                         <span onClick={()=>onCheerClick(post.id)}> {post.is_on ? '💖' : '🤍'}</span>

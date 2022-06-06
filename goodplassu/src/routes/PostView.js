@@ -5,7 +5,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 const PostView = () => {
     const { no } = useParams(); 
     const [ post, setPost ] = useState([]); // 게시물 상세보기
-    const moment = require('moment'); // 시간 형식 바꿀 때 필요한 라이브러리
     const navigate = useNavigate();
     
   	useEffect(()=>{
@@ -47,8 +46,8 @@ const PostView = () => {
     const commentLoading = async() =>{
         await axios.get(`https://goodplassu-server.herokuapp.com/comment`, {params : {id : no}})
         .then((res)=>{
-            setComments(res.data.comments);
-            console.log(comments);
+            console.log(res.data.comment)
+            setComments(res.data.comment);
         })
         .catch((err)=>console.log(err))
     }
@@ -127,11 +126,17 @@ const PostView = () => {
                 }}
     //-----
 
+    // 날짜 보여주기 함수
+    const Date = (date) =>{
+        return date.substr(0,10) + ' ' + date.slice(11,16)
+    }
+    //-----
+
     return (
         <div>
         <header> 
             <span><img src={post.writer_portrait} width='30px' height='30px'/> {post.writer_name} </span>
-            <p>작성일자 : {moment(post.updated_at).format('YYYY-MM-DD HH:MM')}
+            <p>작성일자 : {Date(String(post.updated_at))+' '} 
             {post.user_key === localStorage.getItem("ID") ? <button onClick={()=>navigate(`/posting/${no}`)}>수정</button> :<></>}
             {post.user_key === localStorage.getItem("ID") ? <button onClick={deletePost}>삭제</button> : <></>}
             </p>
@@ -144,7 +149,7 @@ const PostView = () => {
         </header>
             {comments.map((comment,index)=>(
                 <span className='comment' key={index} >
-                <p>{comment.user_key} {moment(comment.created_at).format("YYYY-MM-DD HH:MM")}</p>
+                <p><img src={comment.writer_portrait} width ='20px'/>{comment.writer_name} {Date(String(comment.created_at))+' '}</p>
                 <p>내용 : {comment.content} 
                 {comment.user_key===localStorage.getItem("ID") ? <button onClick={()=>deleteComment(`${comment.id}`)}>삭제</button> : <></>}
                 </p>

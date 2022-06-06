@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import TextField from '@mui/material/TextField';
 
 const Posting = () =>{
     const navigate = useNavigate();
@@ -122,9 +123,11 @@ const Posting = () =>{
         <div>
             <form onSubmit={onSubmit}>
                 <>
-                <input value={content} onChange={onChange} type='text' placeholder='내용 입력' maxLength={1000} />
+                <TextField sx={{width: 400}} multiline value={content} onChange={onChange} placeholder='내용 입력' maxLength={1000} />
+                <div>
                 <input type='file' name='imgFile' multiple='multiple' onChange={handleAddImages} accept='.jpg,.jpeg,.png'/>
                 <input type='submit' value='POST' />
+                </div>
                 </>
             </form>
         </div>

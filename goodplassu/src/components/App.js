@@ -7,9 +7,6 @@ import axios from 'axios';
 
 
 function App() {
-    const [IsLoggedIn, setIsLoggedIn ] = useState(localStorage.getItem('ID')!=null);
-    useEffect(() => {(localStorage.getItem('ID')!=null)?setIsLoggedIn(true):setIsLoggedIn(false)
-        },[localStorage.getItem('ID')])
         return (
         <div className="App">
             <Routers />

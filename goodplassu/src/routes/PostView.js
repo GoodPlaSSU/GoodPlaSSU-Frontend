@@ -142,9 +142,9 @@ const PostView = () => {
             </p>
             <h3>{post.content}</h3>
             {post.image1 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>} {/*이미지가 존재하면 보여주고 아니면 안보여줌*/}
-            {post.image2 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
-            {post.image3 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
-            {post.image4 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
+            {post.image2 ? <img src={post.image2} width = 'auto' height='150px'/> :<p></p>}
+            {post.image3 ? <img src={post.image3} width = 'auto' height='150px'/> :<p></p>}
+            {post.image4 ? <img src={post.image4} width = 'auto' height='150px'/> :<p></p>}
             <span onClick={onCheerClick}> {ison ? '💖' : '🤍'} {firstison ? (ison ? post.cheer_count : post.cheer_count-1) : (ison ? post.cheer_count+1 : post.cheer_count) } </span>
         </header>
             {comments?comments.map((comment,index)=>(

@@ -59,7 +59,7 @@ const MyPage = () => {
         <Typography variant='h3' sx={{my: 3, fontWeight: 'bold'}}>MyPage</Typography>
         <Avatar sx={{mx: 'auto', width: 100, height: 100}} src={userInfo.portrait}/>
         <Box sx={{my: 3, py:2}}>
-        <Typography sx={{fontWeight: 'bold'}} variant='h5'>{userInfo.name}</Typography>
+        <Typography sx={{fontWeight: 'bold'}} variant= 'h5'>{userInfo.name}</Typography>
         <Typography sx={{my: 1}} variant='h6'>선행 포인트 현황</Typography>
         <Typography sx={{}}>전체 포인트: {userInfo.total_point}</Typography>
         <Typography sx={{}}>이달의 포인트: {userInfo.month_point}</Typography>

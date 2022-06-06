@@ -164,13 +164,11 @@ const SPostList = () => {
                         title={post.writer_name}
                         titleTypographyProps={{variant:'h2', sx:{...{fontSize: 20}}}}
                         subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
-                        {/* <p>작성자 :<img src={post.writer_portrait}></img>{post.writer_name} </p> */}
                         <CardContent>
                             <Typography>
                                 {post.content}
                             </Typography>
                         </CardContent>
-                        {/* <CardMedia componet="img"/> */}
                         { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                         </span>
                         <Button color="error" variant='outlined' onClick={()=>onCheerClick(`${post.id}`)} > 💓 {cheer ? post.cheer_count : post.cheer_count + 1 }

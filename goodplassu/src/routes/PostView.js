@@ -105,8 +105,8 @@ const PostView = () => {
             <Card sx={{mx: 'auto', maxWidth: 600, mb: 5, mt: 3}}>
             <CardHeader avatar={<Avatar sx={{ml: 5}} src={post.writer_portrait}/>}
                         title={post.writer_name}
-                        titleTypographyProps={{variant:'h2', sx:{...{fontSize: 20}}}}
-                        sx={{mt:2}}
+                        titleTypographyProps={{variant: 'h2', sx:{...{fontSize: 20}}}}
+                        sx={{mt: 2}}
                         subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
             <p>
             {post.user_key === localStorage.getItem("ID") ? <button onClick={()=>navigate(`/posting/${no}`)}>수정</button> :<></>}
@@ -125,7 +125,7 @@ const PostView = () => {
             {comments.map((comment,index)=>(
                 <span className='comment' key={index} >
                 <Card>
-                <p>{comment.user_key} {moment(comment.created_at).format("YYYY-MM-DD HH:MM")}</p>
+                <p>{comment.user_name} {moment(comment.created_at).format("YYYY-MM-DD HH:MM")}</p>
                 <p>내용 : {comment.content} 
                 {comment.user_key===localStorage.getItem("ID") ? <button onClick={()=>deleteComment(`${comment.id}`)}>삭제</button> : <></>}
                 </p>

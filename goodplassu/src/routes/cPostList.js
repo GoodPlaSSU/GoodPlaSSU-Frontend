@@ -207,17 +207,16 @@ const CPostList = () => {
                 <input type='submit' value='POST' />
                 </>
             </form> */}
-            <Button variant="outlined" onClick={onPostingClick}>게시글 작성하기!</Button>
+            <Button sx={{my: 3}} variant="outlined" onClick={onPostingClick}>게시글 작성하기!</Button>
             </header>
             <div className='cardcontainer'>
                 {postLists.map((post,index)=>(
                     <span className='Post' key={index} >
-                        <Card sx={{mb: 2.5, mx: "auto",px: 5, py: 3, maxWidth: 500}}>
+                        <Card sx={{mb: 2.5, mx: "auto", px: 5, py: 3, maxWidth: 500}}>
                         <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)}>
                         <CardHeader avatar={<Avatar src={post.writer_portrait}/>}
                         title={post.writer_name}
                         subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
-                        {/* <p>작성자 :<img src={post.writer_portrait}></img>{post.writer_name} </p> */}
                         <CardContent>
                             <Typography>
                                 {post.content}

@@ -147,14 +147,14 @@ const PostView = () => {
             {post.image4 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
             <span onClick={onCheerClick}> {ison ? '💖' : '🤍'} {firstison ? (ison ? post.cheer_count : post.cheer_count-1) : (ison ? post.cheer_count+1 : post.cheer_count) } </span>
         </header>
-            {comments.map((comment,index)=>(
+            {comments?comments.map((comment,index)=>(
                 <span className='comment' key={index} >
                 <p><img src={comment.writer_portrait} width ='20px'/>{comment.writer_name} {Date(String(comment.created_at))+' '}</p>
                 <p>내용 : {comment.content} 
                 {comment.user_key===localStorage.getItem("ID") ? <button onClick={()=>deleteComment(`${comment.id}`)}>삭제</button> : <></>}
                 </p>
                 </span>
-            ))}
+            )):<></>}
             <form onSubmit={onSubmit}>
                 <>
                 <input value={commentcontent} onChange={onChange} type='text' placeholder='댓글을 작성해보세요!' maxLength={600} />

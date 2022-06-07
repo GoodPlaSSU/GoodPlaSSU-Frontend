@@ -70,7 +70,8 @@ const CPostList = () => {
             .then((res) => {
                 console.log(nextparameter)
                 console.log(res)
-                setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
+                if(res.data.result===0) setEndLoaded(true);
+                else{setPostLists(postLists=>postLists.concat(res.data.post));} // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
                 if(res.data.result !== 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
                     lastcursor=(res.data.post[9]).cursor
@@ -112,12 +113,13 @@ const CPostList = () => {
 
     // 광고 불러오기 함수
     const [ads,setAds] = useState([]);
+    const [adscount,setAdsCount] = useState('');
     let i = 0; // 광고 순서 매기기 위한 변수
     const adLoading = async() => {
         await axios.get(`https://goodplassu-server.herokuapp.com/ad`)
         .then((res)=>{
             setAds(res.data.ads);
-            console.log(ads);
+            setAdsCount(res.data.result);
         })
         .catch((err)=>console.log(err))
     }
@@ -134,7 +136,7 @@ const CPostList = () => {
         navigate(`/PostView/${postid}`)
     }
     //-----
-
+    
     return (
         <div>
              <header>
@@ -171,11 +173,11 @@ const CPostList = () => {
                 ))  
                 :<></>}
             </div>
-            {ads.length - i ? (<a href={ads[i].link}><img src={ads[i++].image} /></a>) : <></>}
             <> 
             {endLoaded ? <p> 마지막 게시물 입니다. </p>  :
             <div ref={setTarget} className='Target Element'>{isLoaded &&"로딩중 .. 기다려주세요"}</div>}
             </>
+            {adscount-i? (<a href={ads[i].link}><img src={ads[i++].image} /></a>) :<></>}
         </div>
     );
 };

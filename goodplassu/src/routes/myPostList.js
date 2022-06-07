@@ -8,6 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 
 const MyPostList = () =>{
     const {no} = useParams();
@@ -50,7 +51,8 @@ const MyPostList = () =>{
                 await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mypost`,{params :{id:localStorage.getItem("ID"),cursor:lastcursor}}) // json-server에서 페이지 네이션 하는 법
                 .then((res) => {
                     console.log(res)
-                    setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
+                    if(res.data.result===0) setEndLoaded(true);
+                    else{setPostLists(postLists=>postLists.concat(res.data.post));} // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨get요청 하게됨
                     if(res.data.result !== 10) {
                         setEndLoaded(true);
                     }// 받아온 데이터가 10개 이하면, endloaded를 true바꿈
@@ -82,7 +84,8 @@ const MyPostList = () =>{
                 await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mycomment`,{params :{id:localStorage.getItem("ID"),cursor:lastcursor}}) // json-server에서 페이지 네이션 하는 법
                 .then((res) => {
                     console.log(res)
-                    setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
+                    if(res.data.result===0) setEndLoaded(true);
+                    else{setPostLists(postLists=>postLists.concat(res.data.post));} // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨get요청 하게됨
                     if(res.data.result !== 10) {
                         setEndLoaded(true);
                     }// 받아온 데이터가 10개 이하면, endloaded를 true바꿈
@@ -114,7 +117,8 @@ const MyPostList = () =>{
                 await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mycheer`,{params :{id:localStorage.getItem("ID"),cursor:lastcursor}}) // json-server에서 페이지 네이션 하는 법
                 .then((res) => {
                     console.log(res)
-                    setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
+                    if(res.data.result===0) setEndLoaded(true);
+                    else{setPostLists(postLists=>postLists.concat(res.data.post));} // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨get요청 하게됨
                     if(res.data.result !== 10) {
                         setEndLoaded(true);
                     }// 받아온 데이터가 10개 이하면, endloaded를 true바꿈
@@ -177,7 +181,7 @@ const MyPostList = () =>{
                     { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                     </span>
                     <Typography>
-                        {post.is_on? <FavoriteIcon color='error'/>:<FavoriteIcon color='disabled'/>} {post.cheer_count}  <PersonOutlineIcon sx={{ml: 2}}/> {post.view_count}
+                        {post.is_on? (post.tag?<PeopleAltIcon color='info'/>:<FavoriteIcon color='error'/>):(post.tag?<PeopleAltIcon color='disabled'/>:<FavoriteIcon color='disabled'/>)} {post.cheer_count}  <PersonOutlineIcon sx={{ml: 2}}/> {post.view_count}
                     </Typography>
                     </Card>
                 </span>

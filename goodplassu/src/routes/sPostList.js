@@ -43,7 +43,6 @@ const SPostList = () => {
     const firstparameter = {params:{tag:0,cursor:'999999999999999999999999',user_key:localStorage.getItem("ID")}};
     let nextparameter = {params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};
 
-
     useEffect(() => {
         console.log(postLists);
     }, [postLists]);
@@ -56,6 +55,7 @@ const SPostList = () => {
             .then((res) => {
                 console.log(res)
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
+                if(res.data.result ===0) {setEndLoaded(true); setPostLists(null);}
                 if(res.data.result !== 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
                     console.log((res.data.post[9]).cursor)
@@ -71,8 +71,9 @@ const SPostList = () => {
             .then((res) => {
                 console.log(nextparameter)
                 console.log(res)
-                setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
-                if(res.data.result !== 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
+                if(res.data.result===0) setEndLoaded(true);
+                else{setPostLists(postLists=>postLists.concat(res.data.post));} // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
+                if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
                     lastcursor=(res.data.post[9]).cursor
                     nextparameter={params: {tag: 0, cursor: lastcursor, user_key: localStorage.getItem("ID")}};
@@ -129,7 +130,7 @@ const SPostList = () => {
             <Button variant="outlined" sx={{my: 3}} onClick={onPostingClick}>게시글 작성하기!</Button>
             </header>
             <div className='cardcontainer'>
-                {postLists? postLists.map((post,index)=>(
+                {postLists.map((post,index)=>(
                     <span className='Post' key={index} >
                         <Card sx={{mb: 2.5, mx: "auto", px: 5, pb: 3, maxWidth: 500}}>
                         <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)} >
@@ -149,7 +150,7 @@ const SPostList = () => {
                         </Typography>
                         </Card>
                     </span>
-                )):<></>}
+                ))}
             </div>
             <> 
             {endLoaded ? <p> 마지막 게시물 입니다. </p>  :

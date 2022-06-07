@@ -29,8 +29,8 @@ const Navigation = () =>{
         }
 
     return(
-        <Box sx={{width: '100%', color: "background.paper", bgcolor: 'info.main'}}>
-            <Tabs textColor= "primary.contrastText" value={false} centered={true}>
+        <Box sx={{width: '100%', color: "info.contrastText", bgcolor: 'info.main'}}>
+            <Tabs sx={{fontWeight: 'bold'}} textColor="inherit" value={false} centered={true}>
                 <Typography align='left' sx={{
                     mt: 1,
                     mr: 1,

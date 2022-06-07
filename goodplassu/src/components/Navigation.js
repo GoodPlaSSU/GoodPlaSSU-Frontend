@@ -29,19 +29,19 @@ const Navigation = () =>{
         }
 
     return(
-        <Box sx={{width:'100%', color:"background.paper", bgcolor:'info.main'}}>
-            <Tabs textColor="paper" value={false} centered={true}>
+        <Box sx={{width: '100%', color: "background.paper", bgcolor: 'info.main'}}>
+            <Tabs textColor= "primary.contrastText" value={false} centered={true}>
                 <Typography align='left' sx={{
-                    mt:1,
-                    mr:1,
-                    fontWeight:'bold'
+                    mt: 1,
+                    mr: 1,
+                    fontWeight: 'bold'
                 }}
                 variant="h6">GoodplaSSU</Typography>
                 <LinkTab label="선행게시판" href="/" />
                 <LinkTab label="참여게시판" href="/cBoard"/>
                 <LinkTab label="마이페이지" href={(localStorage.getItem('ID')!=null)? "/mypage":"/LogIn"}/>
-                {(localStorage.getItem('ID')!=null) ? <Button sx={{height:30, mt:1}} variant="contained" onClick={onLogOutClick}>LOGOUT</Button> :
-                <Button sx={{height:30, mt:1}} variant="contained" onClick={onLogInClick}>LOGIN</Button>}
+                {(localStorage.getItem('ID')!=null) ? <Button sx={{height: 30, mt: 1}} variant="contained" onClick={onLogOutClick}>LOGOUT</Button> :
+                <Button sx={{height: 30, mt: 1}} variant="contained" onClick={onLogInClick}>LOGIN</Button>}
             </Tabs>
         </Box>
     );

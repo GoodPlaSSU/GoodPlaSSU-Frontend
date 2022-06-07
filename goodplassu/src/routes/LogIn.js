@@ -1,7 +1,5 @@
-import React, { Component , useEffect} from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import React, { Component } from 'react';
 import '../layout/LogIn.css'
-import GoogleLogin from 'react-google-login';
 import axios from 'axios';
 
 class LogIn extends Component {

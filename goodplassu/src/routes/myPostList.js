@@ -6,6 +6,8 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 const MyPostList = () =>{
     const {no} = useParams();
@@ -31,13 +33,14 @@ const MyPostList = () =>{
     const LoadPostList = async()=>{    
         setIsLoaded(true);
         console.log('loading')
-        if(no=='post'){ // 내가 쓴 게시물을 눌렀을 때
+        if(no==='post'){ // 내가 쓴 게시물을 눌렀을 때
             if(firstloading){
                 await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mypost`,{params :{id:localStorage.getItem("ID"),cursor: '999999999999999999999999'}})
                 .then((res) => {
                     console.log(res)
                     setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
-                    if(res.data.result != 10) {
+                    if(res.data.result ===0) {setEndLoaded(true); setPostLists(null);}
+                    if(res.data.result !== 10) {
                         setEndLoaded(true);
                     } // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                     else {
@@ -52,7 +55,7 @@ const MyPostList = () =>{
                 .then((res) => {
                     console.log(res)
                     setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
-                    if(res.data.result != 10) {
+                    if(res.data.result !== 10) {
                         setEndLoaded(true);
                     }// 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                     else {
@@ -62,13 +65,14 @@ const MyPostList = () =>{
                 })
             }
         }
-        else if (no=='comment'){ // 내가 댓글 단 게시물을 눌렀을 때
+        else if (no==='comment'){ // 내가 댓글 단 게시물을 눌렀을 때
             if(firstloading){
                 await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mycomment`,{params :{id:localStorage.getItem("ID"),cursor: '999999999999999999999999'}})
                 .then((res) => {
                     console.log(res)
                     setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
-                    if(res.data.result != 10) {
+                    if(res.data.result ===0) {setEndLoaded(true); setPostLists(null);}
+                    if(res.data.result !== 10) {
                         setEndLoaded(true);
                     }// 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                     else {
@@ -83,7 +87,7 @@ const MyPostList = () =>{
                 .then((res) => {
                     console.log(res)
                     setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
-                    if(res.data.result != 10) {
+                    if(res.data.result !== 10) {
                         setEndLoaded(true);
                     }// 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                     else {
@@ -93,13 +97,14 @@ const MyPostList = () =>{
                 })
             }    
         }
-        else if (no=='cheer'){ // 내가 좋아요 누른 게시물을 눌렀을 때
+        else if (no==='cheer'){ // 내가 좋아요 누른 게시물을 눌렀을 때
             if(firstloading){
                 await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mycheer`,{params :{id:localStorage.getItem("ID"),cursor: '999999999999999999999999'}})
                 .then((res) => {
                     console.log(res)
                     setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
-                    if(res.data.result != 10) {
+                    if(res.data.result ===0) {setEndLoaded(true); setPostLists(null);}
+                    if(res.data.result !== 10) {
                         setEndLoaded(true);
                     }// 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                     else {
@@ -114,7 +119,7 @@ const MyPostList = () =>{
                 .then((res) => {
                     console.log(res)
                     setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
-                    if(res.data.result != 10) {
+                    if(res.data.result !== 10) {
                         setEndLoaded(true);
                     }// 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                     else {
@@ -157,39 +162,10 @@ const MyPostList = () =>{
     }
     //-----
 
-    // 좋아요(참여하기) 클릭 함수
-    const [cheer,setCheer]=useState(1); // 1이면 아직 누르지 않은 상태, 0이면 누른 상태
-    const onCheerClick = (postid) =>{
-        if(localStorage.getItem("ID")==null){
-            navigate('LogIn'); // 로그인 되어있지 않으면 로그인 페이지로 이동
-        }
-        else{
-        {cheer ?
-        (axios.post('https://goodplassu-server.herokuapp.com/cheer',{ // cheer가 1일때 실행 -> 눌러지지 않은 상태
-            "user_key": localStorage.getItem("ID"),
-            "board_key": postid,
-            "isOn": true
-        })
-        .then((res)=>{
-            console.log(res);
-            setCheer(0);
-        })) : (
-            axios.post('https://goodplassu-server.herokuapp.com/cheer',{
-            "user_key": localStorage.getItem("ID"),
-            "board_key": postid,
-            "isOn": false
-        })
-        .then((res)=>{
-            console.log(res);
-            setCheer(1);
-        }))}}
-    }
-    //-----
-
     return (
         <div>
             <div className='cardcontainer'>
-            {postLists.map((post,index)=>(
+            {postLists ? postLists.map((post,index)=>(
                 <span className='Post' key={index} >
                     <Card sx={{mb: 2.5, mx: "auto",px: 5, py: 3, maxWidth: 500}}>
                     <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)} >
@@ -204,12 +180,12 @@ const MyPostList = () =>{
                         </CardContent>
                     { (post.image1) ? <p> 📁 </p> : <p></p> } {/*이미지가 있으면 아이콘, 없으면 표시 x */}
                     </span>
-                    {post.tag ? <button onClick={()=>onCheerClick(`${post.id}`,`${post.cheer_count}`)} > 참가하기 🙋🏻{post.cheer_count}</button> :
-                    <button onClick={()=>onCheerClick(`${post.id}`,`${post.cheer_count}`)} > 💓 {post.cheer_count}</button>}
-                    <p></p>
+                    <Typography>
+                        {post.is_on? <FavoriteIcon color='error'/>:<FavoriteIcon color='disabled'/>} {post.cheer_count}  <PersonOutlineIcon sx={{ml: 2}}/> {post.view_count}
+                    </Typography>
                     </Card>
                 </span>
-            ))}
+            )):<></>}
             </div>
             <> 
             {endLoaded ? <p> 마지막 게시물 입니다. </p>:<div ref={setTarget} className='Target Element'>{isLoaded &&"로딩중 .. 기다려주세요"}</div>}

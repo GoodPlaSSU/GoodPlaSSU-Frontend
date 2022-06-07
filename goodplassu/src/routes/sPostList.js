@@ -14,7 +14,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 const SPostList = () => {
-
   	useEffect(()=>{
         axios.defaults.withCredentials = true; 
     },[])
@@ -57,7 +56,7 @@ const SPostList = () => {
             .then((res) => {
                 console.log(res)
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
-                if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
+                if(res.data.result !== 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
                     console.log((res.data.post[9]).cursor)
                     lastcursor=(res.data.post[9]).cursor
@@ -73,7 +72,7 @@ const SPostList = () => {
                 console.log(nextparameter)
                 console.log(res)
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
-                if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
+                if(res.data.result !== 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
                     lastcursor=(res.data.post[9]).cursor
                     nextparameter={params: {tag: 0, cursor: lastcursor, user_key: localStorage.getItem("ID")}};
@@ -130,7 +129,7 @@ const SPostList = () => {
             <Button variant="outlined" sx={{my: 3}} onClick={onPostingClick}>게시글 작성하기!</Button>
             </header>
             <div className='cardcontainer'>
-                {postLists.map((post,index)=>(
+                {postLists? postLists.map((post,index)=>(
                     <span className='Post' key={index} >
                         <Card sx={{mb: 2.5, mx: "auto", px: 5, pb: 3, maxWidth: 500}}>
                         <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)} >
@@ -150,7 +149,7 @@ const SPostList = () => {
                         </Typography>
                         </Card>
                     </span>
-                ))}
+                )):<></>}
             </div>
             <> 
             {endLoaded ? <p> 마지막 게시물 입니다. </p>  :

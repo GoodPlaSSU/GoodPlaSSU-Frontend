@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {useGoolgeLogout} from 'react-google-login';
 import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';

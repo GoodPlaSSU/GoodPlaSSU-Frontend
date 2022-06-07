@@ -5,7 +5,6 @@ import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const PORT = process.env.PORT || 3001
 root.render(
   <React.StrictMode>
     <App />

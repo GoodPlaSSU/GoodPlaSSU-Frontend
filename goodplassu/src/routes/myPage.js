@@ -12,7 +12,6 @@ import Divider from '@mui/material/Divider';
 
 const MyPage = () => {
     const [userInfo,setUserInfo] = useState([]);
-
     const id = localStorage.getItem("ID");
 
     useEffect(()=>{
@@ -30,7 +29,6 @@ const MyPage = () => {
     useEffect(()=>{
         console.log(userInfo);
     },[userInfo])
-
 
     // 게시물 버튼 클릭 함수 
     const navigate = useNavigate();

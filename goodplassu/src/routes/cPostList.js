@@ -124,7 +124,7 @@ const CPostList = () => {
 
     useEffect(()=>{
         adLoading();
-    },[])
+    },[adLoading])
     //-----
 
     // 카드(게시물) 클릭 함수

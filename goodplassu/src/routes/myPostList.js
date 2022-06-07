@@ -165,7 +165,7 @@ const MyPostList = () =>{
                 <span className='Post' key={index} >
                     <Card sx={{mb: 2.5, mx: "auto",px: 5, py: 3, maxWidth: 500}}>
                     <span className='Post-cheer' onClick={()=> CardClick(`${post.id}`)} >
-                    <CardHeader avatar={<Avatar src={post.writer_portrait}/>}
+                    <CardHeader avatar={<Avatar src={post.wirter_portrait}/>}
                         title={post.writer_name}
                         subheader={moment(post.updated_at).format("YYYY-MM-DD HH:MM")}/>
                         <CardContent>

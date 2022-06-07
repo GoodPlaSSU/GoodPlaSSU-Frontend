@@ -60,8 +60,8 @@ const Posting = () =>{
                 .catch((err)=>console.log(err))
             })
             .then((res)=>{
-                navigate(-1);
-                window.location.reload();
+                navigate(`/PostView/${no}`);
+                console.log(res)
             })
             .catch((err)=>console.log(err))
             //-----

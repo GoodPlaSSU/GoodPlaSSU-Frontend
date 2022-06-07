@@ -76,12 +76,7 @@ const Posting = () =>{
                 await axios.get(`https://goodplassu-server.herokuapp.com/board/${no}`)
                 .then((res)=>{
                     setContent(res.data.post[0].content);
-                    if(res.data.post[0].image1) formData.set('image1',res.data.post[0].image1);
-                    if(res.data.post[0].image2) formData.set('image2',res.data.post[0].image2);
-                    if(res.data.post[0].image3) formData.set('image3',res.data.post[0].image3);
-                    if(res.data.post[0].image4) formData.set('image4',res.data.post[0].image4);
-
-                    if(res.data.post[0].user_key != localStorage.getItem("ID")){
+                    if(res.data.post[0].user_key !== localStorage.getItem("ID")){
                         alert('작성자가 아닌 사람은 수정할 수 없습니다.')
                         navigate('/LogIn')
                     }
@@ -90,7 +85,7 @@ const Posting = () =>{
             }
             postLoading();
         }
-    },[])
+    },[no])
     
     // 이미지 업로드 함수
 

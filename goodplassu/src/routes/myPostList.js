@@ -21,10 +21,6 @@ const MyPostList = () =>{
     let firstloading=1; // 처음 로딩인지 아닌지 구분하기 위함
     let lastcursor=null;
     const moment = require('moment'); // 시간 형식 바꿀 때 필요한 라이브러리
-    
-    useEffect(() => {
-        console.log(postLists);
-    }, [postLists]);
 
   	useEffect(()=>{
         axios.defaults.withCredentials = true; 

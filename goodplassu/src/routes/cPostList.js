@@ -55,7 +55,7 @@ const CPostList = () => {
                 console.log(res)
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
                 if(res.data.result ===0) {setEndLoaded(true); setPostLists(null);}
-                if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
+                if(res.data.result !== 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
                     console.log((res.data.post[9]).cursor)
                     lastcursor=(res.data.post[9]).cursor
@@ -71,7 +71,7 @@ const CPostList = () => {
                 console.log(nextparameter)
                 console.log(res)
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
-                if(res.data.result != 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
+                if(res.data.result !== 10) setEndLoaded(true); // 받아온 데이터가 10개 이하면, endloaded를 true바꿈
                 else {
                     lastcursor=(res.data.post[9]).cursor
                     nextparameter = {params:{tag:0,cursor:lastcursor,user_key:localStorage.getItem("ID")}};

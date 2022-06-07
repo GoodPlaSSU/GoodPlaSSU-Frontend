@@ -34,7 +34,7 @@ const PostView = () => {
 
     useEffect(() => { //처음에 게시글 불러오기 
         postLoading();
-    }, []);
+    }, [no]);
     //-----
 
     // 게시물 삭제 함수
@@ -61,7 +61,7 @@ const PostView = () => {
 
     useEffect(()=>{
         commentLoading();
-    },[])
+    },[no])
     //-----
 
     // 댓글 작성하기 함수
@@ -106,7 +106,7 @@ const PostView = () => {
             setIson(res.data.is_on)
             setFirstison(res.data.is_on)
         })
-    },[])
+    },[no])
 
     const onCheerClick = () =>{
         if(localStorage.getItem("ID")==null){
@@ -143,7 +143,7 @@ const PostView = () => {
         <div>
         <header> 
             <Card sx={{mx: 'auto', maxWidth: 600, mb: 5, mt: 3}}>
-            <CardHeader avatar={<Avatar sx={{ml: 5}} src={post.writer_portrait}/>}
+            <CardHeader avatar={<Avatar sx={{ml: 5}} src={post.wirter_portrait}/>}
                         title={post.writer_name}
                         titleTypographyProps={{variant: 'h2', sx: {...{fontSize: 20}}}}
                         sx={{mt: 2}}
@@ -154,7 +154,7 @@ const PostView = () => {
             </p>
             <CardContent>
             <Typography sx={{mb: 2}}>{post.content}</Typography>
-            {post.image1 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>} {/*이미지가 존재하면 보여주고 아니면 안보여줌*/}
+            {post.image1 ? <img src={post.image1} width = 'auto' height='150px'/> :<p></p>}
             {post.image2 ? <img src={post.image2} width = 'auto' height='150px'/> :<p></p>}
             {post.image3 ? <img src={post.image3} width = 'auto' height='150px'/> :<p></p>}
             {post.image4 ? <img src={post.image4} width = 'auto' height='150px'/> :<p></p>}

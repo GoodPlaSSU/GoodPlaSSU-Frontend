@@ -25,7 +25,7 @@ const MyPage = () => {
             setUserInfo(res.data.user[0]);
         })
         .catch((err)=>console.log(err))
-    },[])
+    },[id])
 
     useEffect(()=>{
         console.log(userInfo);

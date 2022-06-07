@@ -47,6 +47,13 @@ const MyPage = () => {
 
     //선행로드맵
     const point = userInfo.total_point;
+    const loadmap = () => {
+        if(point > 500) return '🧑‍🔧🔹👮🔹🧙🔹🤴'
+        else if(point > 300) return '🧑‍🔧🔹👮🔹🧙🔹❔'
+        else if(point > 100) return '🧑‍🔧🔹👮🔹❔🔹❔'
+        else if(point > 50) return '🧑‍🔧🔹❔🔹❔🔹❔'
+        else return '❔🔹❔🔹❔🔹❔'
+    }
 
     return (
         // 마이페이지 레이아웃
@@ -81,6 +88,7 @@ const MyPage = () => {
         <> 
         <span>
         <p>선행 로드맵</p>
+        <h1>{loadmap()}</h1>
         </span>
         </>
         </>

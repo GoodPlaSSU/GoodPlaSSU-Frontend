@@ -25,7 +25,7 @@ class LogIn extends Component {
                 portrait:profile.getImageUrl(),
             }
             axios.defaults.withCredentials = true; 
-            axios.post(`https://goodplassu-server.herokuapp.com/login`,user)
+            axios.post(`https://goodplassu-backend.fly.dev/login`,user)
             .then((res)=>{
                 console.log(res)
             })

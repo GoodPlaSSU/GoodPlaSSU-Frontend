@@ -13,7 +13,7 @@ const Posting = () =>{
 
     const writepost = () => {
         if(no==='spost'){
-            axios.post(`https://goodplassu-server.herokuapp.com/board`,{
+            axios.post(`https://goodplassu-backend.fly.dev/board`,{
                 "user_key" : localStorage.getItem("ID"),
                 "content" : content,
                 "tag" : 0
@@ -31,7 +31,7 @@ const Posting = () =>{
             .catch((err)=>console.log(err))
         }
         else if(no==='cpost'){
-            axios.post(`https://goodplassu-server.herokuapp.com/board`,{
+            axios.post(`https://goodplassu-backend.fly.dev/board`,{
                 "user_key" : localStorage.getItem("ID"),
                 "content" : content,
                 "tag" : 1
@@ -49,7 +49,7 @@ const Posting = () =>{
             .catch((err)=>console.log(err))
         }
         else{ //수정인 경우는 게시글 id가 넘어옴요..게시물 불러오기 함수
-            axios.post(`https://goodplassu-server.herokuapp.com/board/${no}`,{
+            axios.post(`https://goodplassu-backend.fly.dev/board/${no}`,{
                 "content" : content,
             })
             .then((res)=>{
@@ -73,7 +73,7 @@ const Posting = () =>{
         else if(no==='spost');
         else{
             const postLoading = async() => {
-                await axios.get(`https://goodplassu-server.herokuapp.com/board/${no}`)
+                await axios.get(`https://goodplassu-backend.fly.dev/board/${no}`)
                 .then((res)=>{
                     setContent(res.data.post[0].content);
                     if(res.data.post[0].user_key !== localStorage.getItem("ID")){

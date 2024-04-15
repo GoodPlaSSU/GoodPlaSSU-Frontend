@@ -21,7 +21,7 @@ const PostView = () => {
     // 게시물 불러오기 함수
     const postLoading = async() => {
         console.log('postview loading');
-        await axios.get(`https://goodplassu-server.herokuapp.com/board/${no}`)
+        await axios.get(`https://goodplassu-backend.fly.dev/board/${no}`)
         .then((res)=>{
             setPost(res.data.post[0]);
         })
@@ -39,7 +39,7 @@ const PostView = () => {
 
     // 게시물 삭제 함수
     const deletePost = async() => {
-        await axios.delete(`https://goodplassu-server.herokuapp.com/board/${no}`)
+        await axios.delete(`https://goodplassu-backend.fly.dev/board/${no}`)
         .then((res)=>{
             console.log('post delete succeed!');
             navigate(-1);
@@ -51,7 +51,7 @@ const PostView = () => {
     // 댓글 불러오기 함수
     const [comments,setComments] = useState([]);
     const commentLoading = async() =>{
-        await axios.get(`https://goodplassu-server.herokuapp.com/comment`, {params : {id : no}})
+        await axios.get(`https://goodplassu-backend.fly.dev/comment`, {params : {id : no}})
         .then((res)=>{
             console.log(res.data.comment)
             setComments(res.data.comment);
@@ -69,7 +69,7 @@ const PostView = () => {
     const onSubmit= (event) =>{
         event.preventDefault();
         if(localStorage.getItem("ID") == null){navigate('/LogIn'); window.location.reload();}
-        axios.post(`https://goodplassu-server.herokuapp.com/comment`,{
+        axios.post(`https://goodplassu-backend.fly.dev/comment`,{
             "user_key" : localStorage.getItem("ID"),
             "board_key" : no,
             "content" : commentcontent
@@ -88,7 +88,7 @@ const PostView = () => {
 
     // 댓글 삭제하는 함수
     const deleteComment = async(commentid) =>{
-        await axios.delete(`https://goodplassu-server.herokuapp.com/comment`,{params:{id:commentid}})
+        await axios.delete(`https://goodplassu-backend.fly.dev/comment`,{params:{id:commentid}})
         .then((res)=>{
             console.log('comment delete succeed!');
             window.location.reload();
@@ -101,7 +101,7 @@ const PostView = () => {
     const [ison,setIson]=useState();
     const [firstison,setFirstison]=useState(); // 처음에 눌러져있는지 안눌러져있는지 중요함..ㅠ
     useEffect(()=>{
-        axios.get(`https://goodplassu-server.herokuapp.com/cheer`,{params :{user_key:localStorage.getItem("ID"),board_key: no}})
+        axios.get(`https://goodplassu-backend.fly.dev/cheer`,{params :{user_key:localStorage.getItem("ID"),board_key: no}})
         .then((res)=>{
             setIson(res.data.is_on)
             setFirstison(res.data.is_on)
@@ -113,7 +113,7 @@ const PostView = () => {
             navigate('/LogIn'); // 로그인 되어있지 않으면 로그인 페이지로 이동
         }
         else{ison ?( //true -> 이미 눌러져 있음 
-                    axios.post('https://goodplassu-server.herokuapp.com/cheer',
+                    axios.post('https://goodplassu-backend.fly.dev/cheer',
                     {"user_key" : localStorage.getItem("ID"),
                     "board_key" : no,
                     "isOn" : false})
@@ -121,7 +121,7 @@ const PostView = () => {
                         console.log(res);
                         setIson(0);
                         console.log('좋아요 취소');
-                    })) : (axios.post('https://goodplassu-server.herokuapp.com/cheer',
+                    })) : (axios.post('https://goodplassu-backend.fly.dev/cheer',
                     {"user_key" : localStorage.getItem("ID"),
                     "board_key" : no,
                     "isOn" : true})

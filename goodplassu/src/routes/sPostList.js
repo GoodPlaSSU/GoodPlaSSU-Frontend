@@ -22,7 +22,7 @@ const SPostList = () => {
     const [monthUserName,setMonthUserName]=useState([]); // 이달의 선행왕
 	const [maxpoint,setMaxpoint]=useState(0);
     useEffect(()=>{
-        axios.get(`https://goodplassu-server.herokuapp.com/monthPoint`)
+        axios.get(`https://goodplassu-backend.fly.dev/monthPoint`)
         .then((res)=>{
             console.log(res.data);
             setMaxpoint(res.data.maxPoint);
@@ -51,7 +51,7 @@ const SPostList = () => {
         setIsLoaded(true);
         console.log('loading')
         if(firstloading){
-            await axios.get(`https://goodplassu-server.herokuapp.com/board`,firstparameter)
+            await axios.get(`https://goodplassu-backend.fly.dev/board`,firstparameter)
             .then((res) => {
                 console.log(res)
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
@@ -67,7 +67,7 @@ const SPostList = () => {
             })
         }
         else{
-            await axios.get(`https://goodplassu-server.herokuapp.com/board`,nextparameter) // json-server에서 페이지 네이션 하는 법
+            await axios.get(`https://goodplassu-backend.fly.dev/board`,nextparameter) // json-server에서 페이지 네이션 하는 법
             .then((res) => {
                 console.log(nextparameter)
                 console.log(res)

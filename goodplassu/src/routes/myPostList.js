@@ -32,7 +32,7 @@ const MyPostList = () =>{
         console.log('loading')
         if(no==='post'){ // 내가 쓴 게시물을 눌렀을 때
             if(firstloading){
-                await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mypost`,{params :{id:localStorage.getItem("ID"),cursor: '999999999999999999999999'}})
+                await axios.get(`https://goodplassu-backend.fly.dev/mypage/mypost`,{params :{id:localStorage.getItem("ID"),cursor: '999999999999999999999999'}})
                 .then((res) => {
                     console.log(res)
                     setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
@@ -48,7 +48,7 @@ const MyPostList = () =>{
                 })
             }
             else{
-                await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mypost`,{params :{id:localStorage.getItem("ID"),cursor:lastcursor}}) // json-server에서 페이지 네이션 하는 법
+                await axios.get(`https://goodplassu-backend.fly.dev/mypage/mypost`,{params :{id:localStorage.getItem("ID"),cursor:lastcursor}}) // json-server에서 페이지 네이션 하는 법
                 .then((res) => {
                     console.log(res)
                     if(res.data.result===0) setEndLoaded(true);
@@ -65,7 +65,7 @@ const MyPostList = () =>{
         }
         else if (no==='comment'){ // 내가 댓글 단 게시물을 눌렀을 때
             if(firstloading){
-                await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mycomment`,{params :{id:localStorage.getItem("ID"),cursor: '999999999999999999999999'}})
+                await axios.get(`https://goodplassu-backend.fly.dev/mypage/mycomment`,{params :{id:localStorage.getItem("ID"),cursor: '999999999999999999999999'}})
                 .then((res) => {
                     console.log(res)
                     setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
@@ -81,7 +81,7 @@ const MyPostList = () =>{
                 })
             }
             else{
-                await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mycomment`,{params :{id:localStorage.getItem("ID"),cursor:lastcursor}}) // json-server에서 페이지 네이션 하는 법
+                await axios.get(`https://goodplassu-backend.fly.dev/mypage/mycomment`,{params :{id:localStorage.getItem("ID"),cursor:lastcursor}}) // json-server에서 페이지 네이션 하는 법
                 .then((res) => {
                     console.log(res)
                     if(res.data.result===0) setEndLoaded(true);
@@ -98,7 +98,7 @@ const MyPostList = () =>{
         }
         else if (no==='cheer'){ // 내가 좋아요 누른 게시물을 눌렀을 때
             if(firstloading){
-                await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mycheer`,{params :{id:localStorage.getItem("ID"),cursor: '999999999999999999999999'}})
+                await axios.get(`https://goodplassu-backend.fly.dev/mypage/mycheer`,{params :{id:localStorage.getItem("ID"),cursor: '999999999999999999999999'}})
                 .then((res) => {
                     console.log(res)
                     setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
@@ -114,7 +114,7 @@ const MyPostList = () =>{
                 })
             }
             else{
-                await axios.get(`https://goodplassu-server.herokuapp.com/mypage/mycheer`,{params :{id:localStorage.getItem("ID"),cursor:lastcursor}}) // json-server에서 페이지 네이션 하는 법
+                await axios.get(`https://goodplassu-backend.fly.dev/mypage/mycheer`,{params :{id:localStorage.getItem("ID"),cursor:lastcursor}}) // json-server에서 페이지 네이션 하는 법
                 .then((res) => {
                     console.log(res)
                     if(res.data.result===0) setEndLoaded(true);

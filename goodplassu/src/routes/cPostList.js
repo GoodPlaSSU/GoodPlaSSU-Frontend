@@ -20,7 +20,7 @@ const CPostList = () => {
     const [monthUserName,setMonthUserName]=useState([]); // 이달의 선행왕
 	const [maxpoint,setMaxpoint]=useState(0);
     useEffect(()=>{
-        axios.get(`https://goodplassu-server.herokuapp.com/monthPoint`)
+        axios.get(`https://goodplassu-backend.fly.dev/monthPoint`)
         .then((res)=>{
             console.log(res.data);
             setMaxpoint(res.data.maxPoint);
@@ -50,7 +50,7 @@ const CPostList = () => {
         setIsLoaded(true);
         console.log('loading')
         if(firstloading){
-            await axios.get(`https://goodplassu-server.herokuapp.com/board`,firstparameter)
+            await axios.get(`https://goodplassu-backend.fly.dev/board`,firstparameter)
             .then((res) => {
                 console.log(res)
                 setPostLists(postLists=>postLists.concat(res.data.post)); // [...postLists,...res.data] 하면 이상하게 무한 get요청 하게됨
@@ -66,7 +66,7 @@ const CPostList = () => {
             })
         }
         else{
-            await axios.get(`https://goodplassu-server.herokuapp.com/board`,nextparameter) // json-server에서 페이지 네이션 하는 법
+            await axios.get(`https://goodplassu-backend.fly.dev/board`,nextparameter) // json-server에서 페이지 네이션 하는 법
             .then((res) => {
                 console.log(nextparameter)
                 console.log(res)
@@ -116,7 +116,7 @@ const CPostList = () => {
     const [adscount,setAdsCount] = useState('');
     let i = 0; // 광고 순서 매기기 위한 변수
     const adLoading = async() => {
-        await axios.get(`https://goodplassu-server.herokuapp.com/ad`)
+        await axios.get(`https://goodplassu-backend.fly.dev/ad`)
         .then((res)=>{
             setAds(res.data.ads);
             setAdsCount(res.data.result);

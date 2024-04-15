@@ -19,7 +19,7 @@ const MyPage = () => {
     },[])
 
     useEffect(() => {
-        axios.get(`https://goodplassu-server.herokuapp.com/mypage/user/${id}`)
+        axios.get(`https://goodplassu-backend.fly.dev/mypage/user/${id}`)
         .then((res)=>{
             setUserInfo(res.data.user[0]);
         })
